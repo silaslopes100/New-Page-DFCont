@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;500;600&display=swap');
+
+:root {
+  --color-primary: #C9A84C;
+  --color-primary-hover: #D4AF37;
+  --color-secondary: #1A1A1A;
+  --color-bg: #F9F9F9;
+  --color-bg-dark: #1A1A1A;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #4A4A4A;
+  --color-white: #FFFFFF;
+  --color-border: #E9E9E9;
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-circle: 50%;
+
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Lato', sans-serif;
+
+  --font-size-display: 56px;
+  --font-size-title-1: 40px;
+  --font-size-title-2: 28px;
+  --font-size-title-3: 20px;
+  --font-size-body: 16px;
+  --font-size-small: 13px;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 24px;
+  --spacing-5: 32px;
+  --spacing-6: 48px;
+  --spacing-7: 64px;
+  --spacing-8: 80px;
+
+  --animation-duration: 0.5s;
+  --animation-easing: ease-out;
+  --animation-translate: 15px;
+  --animation-delay-cascade: 0.08s;
+  --animation-hover-duration: 0.2s;
+  --animation-hover-scale: 1.02;
+
+  --max-width: 1200px;
+}

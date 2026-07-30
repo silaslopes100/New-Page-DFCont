@@ -1,0 +1,111 @@
+.como-funciona-page .page-hero {
+  padding: var(--spacing-8) 0 var(--spacing-6);
+  text-align: center;
+  background: #0d0d0d;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.como-funciona-page .page-hero h1 {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-2);
+}
+
+.como-funciona-page .page-hero p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.como-funciona-page .steps {
+  background: #0d0d0d;
+}
+
+.steps-timeline {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  padding-left: var(--spacing-7);
+}
+
+.steps-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.step-item {
+  display: flex;
+  gap: var(--spacing-5);
+  margin-bottom: var(--spacing-6);
+  position: relative;
+}
+
+.step-item:last-child {
+  margin-bottom: 0;
+}
+
+.step-number {
+  position: absolute;
+  left: calc(-1 * var(--spacing-7) + 4px);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle);
+  background: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  z-index: 1;
+}
+
+.step-content {
+  padding-top: 4px;
+}
+
+.step-content h3 {
+  font-size: var(--font-size-title-3);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-2);
+}
+
+.step-content p {
+  font-size: var(--font-size-body);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+}
+
+.como-funciona-page .cta-section {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cta-card {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-card h2 {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-3);
+}
+
+.cta-card p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: var(--spacing-5);
+}
+
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}

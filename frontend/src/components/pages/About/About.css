@@ -1,0 +1,130 @@
+.page-hero {
+  padding: var(--spacing-8) 0 var(--spacing-6);
+  text-align: center;
+  background: #0d0d0d;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.page-hero h1 {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-2);
+}
+
+.page-hero p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.about-page .about-story {
+  background: #0d0d0d;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-7);
+  align-items: center;
+}
+
+.about-text h2 {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-4);
+}
+
+.about-text p {
+  margin-bottom: var(--spacing-3);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+.stat-card {
+  text-align: center;
+  padding: var(--spacing-5);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.stat-label {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.about-values {
+  background: #0d0d0d;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-6);
+}
+
+.section-header h2 {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-2);
+}
+
+.section-header p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.value-card {
+  text-align: center;
+  padding: var(--spacing-5);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all var(--animation-hover-duration) ease;
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.value-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: var(--spacing-3);
+}
+
+.value-card h3 {
+  font-size: var(--font-size-title-3);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-2);
+}
+
+.value-card p {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}
