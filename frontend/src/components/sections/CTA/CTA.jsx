@@ -27,7 +27,7 @@ export const CTA = () => {
           <div className="cta-chat-card glass-panel">
             <div className="cta-avatar">
               <img
-                src="/diana.svg"
+                src="/diana.png"
                 alt="Diana Assistente DFCont"
                 className="cta-avatar-img"
                 onError={(e) => {
