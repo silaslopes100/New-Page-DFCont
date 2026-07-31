@@ -45,3 +45,4 @@ async def get_plans(category: Optional[str] = Query(None, description="Filter by
     if category:
         return [p for p in BASE_PLANS if p["category"] == category]
     return BASE_PLANS
+
