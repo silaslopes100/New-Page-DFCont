@@ -1,0 +1,170 @@
+{
+  "backend/app/api/models/calculator.py": [
+    "backend/app/api/routes/calculator.py",
+    "backend/app/services/calculator_service.py"
+  ],
+  "backend/app/api/models/lead.py": [
+    "backend/app/api/routes/lead.py",
+    "backend/app/services/lead_service.py"
+  ],
+  "backend/app/api/models/plan.py": [
+    "backend/app/api/routes/contact.py",
+    "backend/app/api/routes/plans.py"
+  ],
+  "backend/app/api/routes/__init__.py": [
+    "backend/app/main.py"
+  ],
+  "backend/app/core/config.py": [
+    "backend/app/main.py"
+  ],
+  "backend/app/core/database.py": [
+    "backend/app/api/models/contact.py",
+    "backend/app/api/models/lead.py",
+    "backend/app/api/models/plan.py",
+    "backend/app/api/routes/lead.py",
+    "backend/app/api/routes/plans.py",
+    "backend/app/main.py"
+  ],
+  "backend/app/services/calculator_service.py": [
+    "backend/app/api/routes/calculator.py"
+  ],
+  "backend/app/services/lead_service.py": [
+    "backend/app/api/routes/lead.py"
+  ],
+  "frontend/src/App.jsx": [
+    "frontend/src/main.jsx"
+  ],
+  "frontend/src/components/common/Button/Button.css": [
+    "frontend/src/components/common/Button/Button.jsx"
+  ],
+  "frontend/src/components/common/Button/Button.jsx": [
+    "frontend/src/components/common/Navbar/Navbar.jsx",
+    "frontend/src/components/pages/About/About.jsx",
+    "frontend/src/components/pages/Blog/Blog.jsx",
+    "frontend/src/components/pages/ComoFunciona/ComoFunciona.jsx",
+    "frontend/src/components/pages/Contact/Contact.jsx",
+    "frontend/src/components/sections/CTA/CTA.jsx",
+    "frontend/src/components/sections/Calculator/Calculator.jsx",
+    "frontend/src/components/sections/Hero/Hero.jsx",
+    "frontend/src/components/sections/Plans/Plans.jsx"
+  ],
+  "frontend/src/components/common/Card/Card.css": [
+    "frontend/src/components/common/Card/Card.jsx"
+  ],
+  "frontend/src/components/common/Card/Card.jsx": [
+    "frontend/src/components/pages/Blog/Blog.jsx",
+    "frontend/src/components/sections/Plans/Plans.jsx"
+  ],
+  "frontend/src/components/common/Footer/Footer.css": [
+    "frontend/src/components/common/Footer/Footer.jsx"
+  ],
+  "frontend/src/components/common/Footer/Footer.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/common/Input/Input.css": [
+    "frontend/src/components/common/Input/Input.jsx"
+  ],
+  "frontend/src/components/common/Input/Input.jsx": [
+    "frontend/src/components/pages/Contact/Contact.jsx",
+    "frontend/src/components/sections/Calculator/Calculator.jsx"
+  ],
+  "frontend/src/components/common/Modal/Modal.css": [
+    "frontend/src/components/common/Modal/Modal.jsx"
+  ],
+  "frontend/src/components/common/Navbar/Navbar.css": [
+    "frontend/src/components/common/Navbar/Navbar.jsx"
+  ],
+  "frontend/src/components/common/Navbar/Navbar.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/About/About.css": [
+    "frontend/src/components/pages/About/About.jsx"
+  ],
+  "frontend/src/components/pages/About/About.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/Blog/Blog.css": [
+    "frontend/src/components/pages/Blog/Blog.jsx"
+  ],
+  "frontend/src/components/pages/Blog/Blog.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/ComoFunciona/ComoFunciona.css": [
+    "frontend/src/components/pages/ComoFunciona/ComoFunciona.jsx"
+  ],
+  "frontend/src/components/pages/ComoFunciona/ComoFunciona.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/Contact/Contact.css": [
+    "frontend/src/components/pages/Contact/Contact.jsx"
+  ],
+  "frontend/src/components/pages/Contact/Contact.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/Home/Home.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/pages/PlansPage/PlansPage.css": [
+    "frontend/src/components/pages/PlansPage/PlansPage.jsx"
+  ],
+  "frontend/src/components/pages/PlansPage/PlansPage.jsx": [
+    "frontend/src/App.jsx"
+  ],
+  "frontend/src/components/sections/CTA/CTA.css": [
+    "frontend/src/components/sections/CTA/CTA.jsx"
+  ],
+  "frontend/src/components/sections/CTA/CTA.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx",
+    "frontend/src/components/pages/PlansPage/PlansPage.jsx"
+  ],
+  "frontend/src/components/sections/Calculator/Calculator.css": [
+    "frontend/src/components/sections/Calculator/Calculator.jsx"
+  ],
+  "frontend/src/components/sections/Calculator/Calculator.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx"
+  ],
+  "frontend/src/components/sections/FAQ/FAQ.css": [
+    "frontend/src/components/sections/FAQ/FAQ.jsx"
+  ],
+  "frontend/src/components/sections/FAQ/FAQ.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx",
+    "frontend/src/components/pages/PlansPage/PlansPage.jsx"
+  ],
+  "frontend/src/components/sections/Hero/Hero.css": [
+    "frontend/src/components/sections/Hero/Hero.jsx"
+  ],
+  "frontend/src/components/sections/Hero/Hero.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx"
+  ],
+  "frontend/src/components/sections/Plans/Plans.css": [
+    "frontend/src/components/sections/Plans/Plans.jsx"
+  ],
+  "frontend/src/components/sections/Plans/Plans.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx",
+    "frontend/src/components/pages/PlansPage/PlansPage.jsx"
+  ],
+  "frontend/src/components/sections/Testimonials/Testimonials.css": [
+    "frontend/src/components/sections/Testimonials/Testimonials.jsx"
+  ],
+  "frontend/src/components/sections/Testimonials/Testimonials.jsx": [
+    "frontend/src/components/pages/Home/Home.jsx"
+  ],
+  "frontend/src/hooks/useScrollAnimation.js": [
+    "frontend/src/components/pages/About/About.jsx",
+    "frontend/src/components/pages/Blog/Blog.jsx",
+    "frontend/src/components/pages/ComoFunciona/ComoFunciona.jsx",
+    "frontend/src/components/pages/Contact/Contact.jsx",
+    "frontend/src/components/pages/Home/Home.jsx",
+    "frontend/src/components/pages/PlansPage/PlansPage.jsx"
+  ],
+  "frontend/src/services/api.js": [
+    "frontend/src/components/pages/Contact/Contact.jsx",
+    "frontend/src/components/sections/Calculator/Calculator.jsx"
+  ],
+  "frontend/src/styles/animations.css": [
+    "frontend/src/main.jsx"
+  ],
+  "frontend/src/styles/globals.css": [
+    "frontend/src/main.jsx"
+  ]
+}

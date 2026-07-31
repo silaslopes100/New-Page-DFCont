@@ -1,0 +1,219 @@
+{
+  "id": "64f00b37-7afa-4eb7-a214-ce0ff0c010bb",
+  "title": "DEBUG defaults to True: Swagger UI (/docs) exposed in production by default",
+  "description": "config.py:10 sets DEBUG from env with default 'True' (`os.getenv('DEBUG', 'True').lower() == 'true'`), and main.py:10 exposes docs_url='/docs' whenever DEBUG is true. No .env or deployment descriptor exists in the repo, so a default deployment serves the interactive OpenAPI/Swagger UI to the internet, advertising the full API schema, parameter models and validation rules - a free recon/intel asset for attackers. Additionally, /health (main.py:32-34) discloses app name/version.",
+  "impact": "Unauthenticated disclosure of the complete API surface and schema (OpenAPI), easing targeted attacks; minor version disclosure via /health.",
+  "severity": "LOW",
+  "privileges_required": "NONE",
+  "attacker_position": "EXTERNAL",
+  "user_interaction": "NONE",
+  "status": "VALID",
+  "code_paths": [
+    "backend/app/core/config.py:10",
+    "backend/app/main.py:10"
+  ],
+  "cwe": "CWE-200",
+  "signature": "b160884845dc3169",
+  "lineage_id": "3ad7b155-f1c8-46a4-95e7-6478449730ee",
+  "mitigation": "Default DEBUG to False (fail-safe), require an explicit env var to enable; gate /docs behind DEBUG in production; consider hiding /health internals.",
+  "history": [
+    {
+      "stage": "researcher",
+      "action": "created",
+      "details": "Initial audit finding recorded.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:05:28.593179Z"
+    },
+    {
+      "stage": "reviewer",
+      "action": "reviewed",
+      "details": "Determined status as VALID: config.py:10 verified: DEBUG = os.getenv('DEBUG', 'True').lower() == 'true' - defaults True; main.py:10 exposes docs_url when DEBUG. No .env/deployment descriptor in repo. Default deployment therefore serves /docs publicly. Factual information-exposure finding (CWE-200); LOW severity.",
+      "pass_number": 1,
+      "snapshot": "--repro_hints",
+      "timestamp": "2026-07-31T22:07:28.254413Z"
+    },
+    {
+      "stage": "critic",
+      "action": "evaluated",
+      "details": "Determined production viability as CONDITIONAL_VIABLE: Docs exposure depends on DEBUG env: default is True and no deployment descriptor sets it, so a default production deployment exposes /docs; an operator setting DEBUG=false blocks it.",
+      "pass_number": 1,
+      "snapshot": "",
+      "timestamp": "2026-07-31T22:07:53.958190Z"
+    },
+    {
+      "stage": "reproduce",
+      "action": "reproduced",
+      "details": "Reproduction status evaluated as reproduced using command: python poc_F3_F6.py (TestClient, no env vars set)",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:09:53.006160Z"
+    },
+    {
+      "action": "patch_verified",
+      "timestamp": "2026-07-31T22:22:25Z",
+      "patch_status": "VERIFIED_SECURE"
+    },
+    {
+      "stage": "calibrate",
+      "action": "calibrated",
+      "details": "Calculated risk score as 3.5 and priority as MEDIUM.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:24:32Z"
+    },
+    {
+      "action": "patch_gate_completed",
+      "timestamp": "2026-07-31T22:28:16Z",
+      "details": "openapi_url and redoc_url added to the DEBUG gate after live verification showed /openapi.json and /redoc still served when only docs_url is gated"
+    }
+  ],
+  "reasoning": "config.py:10 verified: DEBUG = os.getenv('DEBUG', 'True').lower() == 'true' - defaults True; main.py:10 exposes docs_url when DEBUG. No .env/deployment descriptor in repo. Default deployment therefore serves /docs publicly. Factual information-exposure finding (CWE-200); LOW severity.",
+  "repro_hints": {
+    "build_profile": "python 3.11 default, no environment variables set",
+    "evidence": "HTTP 200 on /docs without any env config"
+  },
+  "triage_checklist": {
+    "ignore_hypothetical_misuse": {
+      "outcome": "PASS"
+    },
+    "ignore_missing_hygiene": {
+      "outcome": "PASS"
+    },
+    "require_strict_reproducibility": {
+      "outcome": "PASS"
+    },
+    "avoid_pedantic_linting": {
+      "outcome": "PASS"
+    },
+    "no_security_flaw_stretching": {
+      "outcome": "PASS"
+    },
+    "evaluate_questionable_file_paths": {
+      "outcome": "PASS"
+    },
+    "ignore_resource_exhaustion_dos": {
+      "outcome": "PASS"
+    },
+    "intrinsic_security_flaws": {
+      "outcome": "PASS"
+    },
+    "verify_mitigations_pragmatically": {
+      "outcome": "PASS"
+    },
+    "refine_code_paths_strictly": {
+      "outcome": "PASS"
+    },
+    "ignore_simd_vector_padding": {
+      "outcome": "PASS"
+    },
+    "ensure_source_code_coherence": {
+      "outcome": "PASS"
+    },
+    "verify_attacker_control_of_source": {
+      "outcome": "PASS"
+    }
+  },
+  "production_viability": "CONDITIONAL_VIABLE",
+  "critic_reasoning": "Docs exposure depends on DEBUG env: default is True and no deployment descriptor sets it, so a default production deployment exposes /docs; an operator setting DEBUG=false blocks it.",
+  "repro_status": "reproduced",
+  "repro_file_path": "D:\\New Page DFCont\\workspace\\reproducers\\poc_F3_F6.py",
+  "repro_run_command": "python poc_F3_F6.py (TestClient, no env vars set)",
+  "repro_output": "GET /docs -> HTTP 200 text/html with swagger-ui present (DEBUG defaulted True). GET /health -> HTTP 200 {\"status\":\"ok\",\"app\":\"DFCont API\",\"version\":\"1.0.0\"}.",
+  "repro_snapshot_id": "UNPINNED-MODE-OFF",
+  "patch_status": "VERIFIED_SECURE",
+  "patch_verification": {
+    "method": "patched shadow rebuilt, baseline re-triggered, patched attack HIDDEN, integrity/benign controls OK",
+    "shadow_dir": "C:\\Users\\SILASL~1\\AppData\\Local\\Temp\\opencode\\mantis_patch\\64_patched",
+    "notes": "DEBUG defaults False; /docs,/openapi.json,/redoc all gated behind DEBUG (openapi_url/redoc_url added to the gate); /health OK; DEBUG=true env opt-in serves all three (verified on live tree)"
+  },
+  "impact_score": 2,
+  "likelihood_score": 3,
+  "availability_tier": null,
+  "inferred_exposure": "EXPOSED",
+  "mantis_risk_score": 3.5,
+  "priority": "MEDIUM",
+  "sanity_triage_applied": null,
+  "calibration_checklist": {
+    "repro_failure": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreachable_inputs": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "third_party_reachability": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "minor_config_hygiene": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_security_critical": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "vague_code_paths": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreliable_triggers": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "prerequisite_shell": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_long_term": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_zero_delta": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "standard_host_attacks": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "static_confirmation": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "strict_xss": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "internal_nested": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "probabilistic_llm": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "supply_chain_prerequisites": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_default_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "confidential_computing_host": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_critical_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "local_attack_vector": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "self_contained_blast": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "rarely_exposed": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "equivalent_primitives": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "documented_insecure_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_temporary": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "high_privilege_external": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_standard_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    }
+  },
+  "outrage_commentary": "Exposing the full OpenAPI schema to the internet by default is a classic amateur deployment tell; credibility hit for a professional services firm.",
+  "executive_summary": "DEBUG defaults to True, so /docs + /openapi.json serve the full API schema anonymously (reproduced). Conditional viability: only exploitable under the default env (no .env in repo) -> 0.7 multiplier. Impact 2, likelihood 3 -> 3.5 MEDIUM. Fix: default DEBUG=False."
+}

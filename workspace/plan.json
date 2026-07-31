@@ -1,0 +1,94 @@
+{
+  "investigations": [
+    {
+      "title": "Exhaustive Review: backend/app/api/routes (API surface)",
+      "target_files": [
+        "backend/app/api/routes/lead.py",
+        "backend/app/api/routes/contact.py",
+        "backend/app/api/routes/plans.py",
+        "backend/app/api/routes/calculator.py",
+        "backend/app/api/routes/__init__.py"
+      ],
+      "kb_references": [
+        "workspace/kb/entities/api_routes.md",
+        "workspace/kb/vulnerabilities/CWE-209.md",
+        "workspace/kb/vulnerabilities/CWE-287.md",
+        "workspace/kb/vulnerabilities/Import-Regression.md",
+        "workspace/kb/THREAT_MODEL.md"
+      ],
+      "question": "Deep review of the four unauthenticated FastAPI routers. (1) Trace every user-controlled input (path/query/body) into validation, persistence, and error paths. (2) Verify the `except Exception as e: raise HTTPException(400, detail=str(e))` pattern and enumerate exactly which internal details (module paths, DB constraint text, library errors) reach clients; propose concrete trigger inputs for each. (3) Confirm the broken imports: plan.py:6 self-import and contact.py:2 undefined ContactRequest/ContactResponse — verify the exact ImportError and all routers it blocks; check whether ANY app functionality can start. (4) Assess lead/contact write endpoints for abuse: no auth, no rate limiting, no CSRF — enumerate impact of unlimited spam writes (DB fill, PII pollution) and any mass-assignment or coercion vectors through Pydantic. (5) Check plans category filter for logic bypasses and the response_model for type-coercion issues."
+    },
+    {
+      "title": "Exhaustive Review: backend/app/api/models (validation layer)",
+      "target_files": [
+        "backend/app/api/models/lead.py",
+        "backend/app/api/models/plan.py",
+        "backend/app/api/models/contact.py",
+        "backend/app/api/models/calculator.py"
+      ],
+      "kb_references": [
+        "workspace/kb/entities/api_models.md",
+        "workspace/kb/vulnerabilities/CWE-209.md",
+        "workspace/kb/vulnerabilities/Import-Regression.md"
+      ],
+      "question": "Review the Pydantic + SQLAlchemy layer. (1) Examine LeadRequest/CalculatorRequest constraints: can any field bypass validation (unicode/case tricks in EmailStr, whitespace-only strings, control chars in phone, huge strings in name/origin)? (2) Verify which tables are actually written vs dead code (ContactDB unused; plans DB never queried). (3) Confirm plan.py:6 self-import failure mechanics and whether removing it makes plans.py import succeed; check whether ContactRequest/ContactResponse exist ANYWHERE (grep whole backend) or are a stub. (4) Check JSON column (features) default handling and any ORM serialization that could leak internal state."
+    },
+    {
+      "title": "Exhaustive Review: backend/app/services (pricing + persistence)",
+      "target_files": [
+        "backend/app/services/calculator_service.py",
+        "backend/app/services/lead_service.py"
+      ],
+      "kb_references": [
+        "workspace/kb/entities/services.md",
+        "workspace/kb/vulnerabilities/CWE-209.md"
+      ],
+      "question": "Review business logic. (1) determine_plan: enumerate integer edge cases (employees 0..1000000, negative blocked by model but what about huge values -> price overflow? Python floats ok, but rounding/precision of money math), dict lookups with safe defaults, any path where `request.contact == 'completo'` or unknown values produce inconsistent plan/price combos (business-logic flaw = wrong price output). (2) lead_service.create_lead: ORM parameterization confirmed? What happens on constraint violation (e.g., null origin) — does the raw IntegrityError text reach the 400 detail (CWE-209)?"
+    },
+    {
+      "title": "Exhaustive Review: backend/app/main.py + core (app entry, CORS, config)",
+      "target_files": [
+        "backend/app/main.py",
+        "backend/app/core/config.py",
+        "backend/app/core/database.py"
+      ],
+      "kb_references": [
+        "workspace/kb/entities/app_entry.md",
+        "workspace/kb/entities/core_config.md",
+        "workspace/kb/vulnerabilities/CWE-942.md",
+        "workspace/kb/vulnerabilities/Import-Regression.md"
+      ],
+      "question": "Review the app entry and config. (1) CORS: allow_credentials=True + allow_methods/headers '*' with 3 hardcoded origins — assess actual exploitability (which origins could an attacker influence? what responses carry credentials?) and config drift risk. (2) DEBUG default True -> /docs exposed in production; confirm. (3) Startup: init_db creates tables; if the plans/contact routers fail import, does uvicorn start at all (main.py imports them unconditionally)? (4) DATABASE_URL default sqlite file next to app — file permissions, PII at rest; any path traversal through env DATABASE_URL? (5) /health information disclosure."
+    },
+    {
+      "title": "Exhaustive Review: frontend/src/services/api.js + form components (client trust boundary)",
+      "target_files": [
+        "frontend/src/services/api.js",
+        "frontend/src/components/sections/Hero/Hero.jsx",
+        "frontend/src/components/sections/CTA/CTA.jsx",
+        "frontend/src/components/pages/Contact/Contact.jsx",
+        "frontend/src/components/sections/Calculator/Calculator.jsx",
+        "frontend/src/components/common/Input/Input.jsx"
+      ],
+      "kb_references": [
+        "workspace/kb/entities/frontend_api_client.md",
+        "workspace/kb/entities/frontend_forms.md",
+        "workspace/kb/vulnerabilities/CWE-209.md"
+      ],
+      "question": "Review the client-side trust boundary. (1) axios error interceptor surfaces `detail` into Error.message which forms render — confirm end-to-end flow of raw exception text into the DOM (React escaping means no XSS, but verify no dangerouslySetInnerHTML anywhere and no other sink in the error paths). (2) Check all 4 API wrappers for URL/param construction with user input (category param) and any baseURL/env handling that could be redirected. (3) Forms: client-side validation gaps, duplicate submissions (no debounce) -> spam amplification toward /api/leads/create. (4) Any stored data (localStorage/sessionStorage) or hardcoded credentials in the bundle."
+    },
+    {
+      "title": "Adversarial sweep: deployment/asset surface and vendor code (assumption-breaking)",
+      "target_files": [
+        "frontend/index.html",
+        "frontend/vite.config.js",
+        "frontend/package.json",
+        "backend/requirements.txt"
+      ],
+      "kb_references": [
+        "workspace/kb/THREAT_MODEL.md"
+      ],
+      "question": "Unconstrained adversarial sweep ignoring prior safety assumptions. Attack the deployment/asset assumptions: (1) frontend/dist/ is committed/checked-in in the working tree (build output present at repo root frontend/dist) — inspect for baked-in API URLs, debug flags, or secrets; is dist deployed as static site while /api proxied? (2) vite dev proxy changeOrigin: could /api requests be redirected (SSRF-ish) in dev; is port 3000 vs production mismatch a risk? (3) package.json dependency versions vs known CVEs (axios, react-router-dom, vite). (4) requirements.txt pins? (no version pins) — supply-chain exposure. (5) Midias/liquid-glass-main contains an unrelated copied web template with its own JS (bg-picker.js, webgl.html) — check if any of it is served or bundled; if unused, note it; if reachable via static hosting, assess its content (external script loads, eval, etc.)."
+    }
+  ]
+}

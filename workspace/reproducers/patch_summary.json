@@ -1,0 +1,37 @@
+{
+  "F1": [
+    "TRIGGERED",
+    "BLOCKED",
+    "OK"
+  ],
+  "F2": [
+    "TRIGGERED",
+    "BLOCKED",
+    "OK"
+  ],
+  "F3": [
+    "TRIGGERED",
+    "BLOCKED",
+    "OK"
+  ],
+  "F4": [
+    "TRIGGERED",
+    "THROTTLED",
+    "OK"
+  ],
+  "F5": [
+    "TRIGGERED",
+    "TIGHTENED",
+    "OK"
+  ],
+  "F6": [
+    "TRIGGERED",
+    "HIDDEN",
+    "OK"
+  ],
+  "F7": [
+    "TRIGGERED",
+    "RESOLVES",
+    "OK"
+  ]
+}

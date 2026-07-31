@@ -7,7 +7,7 @@ load_dotenv()
 class Settings:
     APP_NAME: str = "DFCont API"
     VERSION: str = "1.0.0"
-    DEBUG: bool = os.getenv("DEBUG", "True").lower() == "true"
+    DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
 
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",

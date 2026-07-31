@@ -11,4 +11,4 @@ async def calculate_plan(request: CalculatorRequest):
         plan = determine_plan(request)
         return plan
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail="Invalid request. Please check the submitted data.")

@@ -3,7 +3,6 @@ from typing import List, Optional
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, Boolean, JSON, DateTime
 from app.core.database import Base
-from app.api.models.plan import PlanDB
 
 
 class PlanDB(Base):

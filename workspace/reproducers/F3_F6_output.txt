@@ -1,0 +1,15 @@
+=== F3 POST /api/leads/create with throwing service: HTTP 400
+F3 body detail: {"detail":"SECRET_INTERNAL:/etc/dfcont/config/secrets.db INTERNAL_DETAIL_MARKER"}
+=== F4 POST no auth: HTTP 400
+F4 response: {"detail":"(sqlite3.OperationalError) no such table: leads\n[SQL: INSERT INTO leads (name, email, phone, city, activity, origin, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)]\n[parameters: ('Spam Lead', 'spam1@x.com', '11911111111', None, None, 'curl', '2026-07-31 22:09:00.753869')]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"}
+=== F4 POST no auth: HTTP 400
+F4 response: {"detail":"(sqlite3.OperationalError) no such table: leads\n[SQL: INSERT INTO leads (name, email, phone, city, activity, origin, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)]\n[parameters: ('Spam Lead 2', 'spam2@x.com', '11922222222', None, None, 'curl', '2026-07-31 22:09:00.767504')]\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"}
+F4 sqlite db file missing at C:\Users\SILASL~1\AppData\Local\Temp\opencode\mantis_shadow\fully_fixed\dfcont.db
+=== F5 OPTIONS preflight: HTTP 200
+F5 access-control-allow-origin: https://dfcont.com.br
+F5 access-control-allow-credentials: true
+F5 access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT
+F5 access-control-allow-headers: content-type
+=== F6 GET /docs (DEBUG default True): HTTP 200
+F6 content-type: text/html; charset=utf-8, swagger present: True
+F6 /health: HTTP 200 body: {"status":"ok","app":"DFCont API","version":"1.0.0"}

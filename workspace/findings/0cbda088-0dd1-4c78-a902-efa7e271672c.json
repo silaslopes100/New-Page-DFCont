@@ -1,0 +1,215 @@
+{
+  "id": "0cbda088-0dd1-4c78-a902-efa7e271672c",
+  "title": "CWE-287: unauthenticated, unlimited lead/contact writes (no auth, no rate limiting, no CSRF)",
+  "description": "POST /api/leads/create (lead.py:10) accepts arbitrary JSON and persists a LeadDB row with zero authentication, no rate limiting, no CSRF protection, and no origin checks beyond CORS (which is browser-enforced and does not stop curl). Pydantic bounds (name 2-100, email format, phone 10-20) are trivially satisfied by an attacker. Impact: unlimited spam rows fill the SQLite DB (disk exhaustion over time), pollute PII tables used for sales follow-up, and the response 400/500 behavior can be probed freely as an oracle. The same applies to the calculator endpoint (stateless, lower impact) and the contact stub.",
+  "impact": "DB abuse/spam (lead table fill, PII pollution, disk growth), abusable error oracle; no integrity or privacy protection on PII ingestion.",
+  "severity": "MEDIUM",
+  "privileges_required": "NONE",
+  "attacker_position": "EXTERNAL",
+  "user_interaction": "NONE",
+  "status": "VALID",
+  "code_paths": [
+    "backend/app/api/routes/lead.py:10",
+    "backend/app/services/lead_service.py:5"
+  ],
+  "cwe": "CWE-287",
+  "signature": "c7c7a02270c3a19e",
+  "lineage_id": "2a728792-5418-4d58-a932-95008f8c439c",
+  "mitigation": "Add authentication/authorization, per-IP and per-session rate limiting (e.g., slowapi or a proxy WAF), CSRF protection for state-changing endpoints, and input fingerprinting (honeypots, captcha).",
+  "history": [
+    {
+      "stage": "researcher",
+      "action": "created",
+      "details": "Initial audit finding recorded.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:05:28.593179Z"
+    },
+    {
+      "stage": "reviewer",
+      "action": "reviewed",
+      "details": "Determined status as VALID: Verified: lead.py:10 has no auth dependency, no rate limiting, no CSRF; service inserts rows per request. Threat model is Intent: PRODUCTION (dfcont.com.br), so this is a public internet-facing write endpoint - not rule-2 hygiene (that rule targets local-only/test functions). Triggerable by any clie",
+      "pass_number": 1,
+      "snapshot": "--repro_hints",
+      "timestamp": "2026-07-31T22:07:28.254413Z"
+    },
+    {
+      "stage": "critic",
+      "action": "evaluated",
+      "details": "Determined production viability as VIABLE: Public production-intent endpoint (dfcont.com.br) with no auth/rate limiting; fully triggerable from any network client in a standard deployment.",
+      "pass_number": 1,
+      "snapshot": "",
+      "timestamp": "2026-07-31T22:07:53.958190Z"
+    },
+    {
+      "stage": "reproduce",
+      "action": "reproduced",
+      "details": "Reproduction status evaluated as reproduced using command: python poc_F4.py (TestClient against shadow with startup DB init)",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:09:53.006160Z"
+    },
+    {
+      "action": "patch_verified",
+      "timestamp": "2026-07-31T22:22:25Z",
+      "patch_status": "VERIFIED_SECURE"
+    },
+    {
+      "stage": "calibrate",
+      "action": "calibrated",
+      "details": "Calculated risk score as 7.0 and priority as HIGH.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:24:32Z"
+    }
+  ],
+  "reasoning": "Verified: lead.py:10 has no auth dependency, no rate limiting, no CSRF; service inserts rows per request. Threat model is Intent: PRODUCTION (dfcont.com.br), so this is a public internet-facing write endpoint - not rule-2 hygiene (that rule targets local-only/test functions). Triggerable by any client via curl; impact is DB fill/spam and PII pollution.",
+  "repro_hints": {
+    "build_profile": "python 3.11 default",
+    "assertions_disabled": "n/a (interpreted)",
+    "evidence": "HTTP 200 + DB rows persisted for unauthenticated requests"
+  },
+  "triage_checklist": {
+    "ignore_hypothetical_misuse": {
+      "outcome": "PASS"
+    },
+    "ignore_missing_hygiene": {
+      "outcome": "PASS"
+    },
+    "require_strict_reproducibility": {
+      "outcome": "PASS"
+    },
+    "avoid_pedantic_linting": {
+      "outcome": "PASS"
+    },
+    "no_security_flaw_stretching": {
+      "outcome": "PASS"
+    },
+    "evaluate_questionable_file_paths": {
+      "outcome": "PASS"
+    },
+    "ignore_resource_exhaustion_dos": {
+      "outcome": "PASS"
+    },
+    "intrinsic_security_flaws": {
+      "outcome": "PASS"
+    },
+    "verify_mitigations_pragmatically": {
+      "outcome": "PASS"
+    },
+    "refine_code_paths_strictly": {
+      "outcome": "PASS"
+    },
+    "ignore_simd_vector_padding": {
+      "outcome": "PASS"
+    },
+    "ensure_source_code_coherence": {
+      "outcome": "PASS"
+    },
+    "verify_attacker_control_of_source": {
+      "outcome": "PASS"
+    }
+  },
+  "production_viability": "VIABLE",
+  "critic_reasoning": "Public production-intent endpoint (dfcont.com.br) with no auth/rate limiting; fully triggerable from any network client in a standard deployment.",
+  "repro_status": "reproduced",
+  "repro_file_path": "D:\\New Page DFCont\\workspace\\reproducers\\poc_F4.py",
+  "repro_run_command": "python poc_F4.py (TestClient against shadow with startup DB init)",
+  "repro_output": "Three POST /api/leads/create requests with NO auth headers returned HTTP 200 {\"id\":N,\"message\":\"Lead cadastrado com sucesso!\"} and persisted rows (ids 1-3).",
+  "repro_snapshot_id": "UNPINNED-MODE-OFF",
+  "patch_status": "VERIFIED_SECURE",
+  "patch_verification": {
+    "method": "patched shadow rebuilt, baseline re-triggered, patched attack THROTTLED, integrity/benign controls OK",
+    "shadow_dir": "C:\\Users\\SILASL~1\\AppData\\Local\\Temp\\opencode\\mantis_patch\\0c_patched",
+    "notes": "per-IP in-memory 10/min rate limit wired into lead+contact; 12/25 bursts see 429; benign 3 requests 200 OK"
+  },
+  "impact_score": 3,
+  "likelihood_score": 4,
+  "availability_tier": null,
+  "inferred_exposure": "EXPOSED",
+  "mantis_risk_score": 7.0,
+  "priority": "HIGH",
+  "sanity_triage_applied": null,
+  "calibration_checklist": {
+    "repro_failure": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreachable_inputs": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "third_party_reachability": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "minor_config_hygiene": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_security_critical": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "vague_code_paths": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreliable_triggers": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "prerequisite_shell": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_long_term": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_zero_delta": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "standard_host_attacks": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "static_confirmation": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "strict_xss": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "internal_nested": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "probabilistic_llm": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "supply_chain_prerequisites": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_default_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "confidential_computing_host": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_critical_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "local_attack_vector": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "self_contained_blast": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "rarely_exposed": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "equivalent_primitives": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "documented_insecure_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_temporary": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "high_privilege_external": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_standard_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    }
+  },
+  "outrage_commentary": "Anonymous junk flooding a real company's PII intake (sales follow-up) is an integrity annoyance and a GDPR/PI-data quality liability; publicly trivially demonstrable.",
+  "executive_summary": "POST /api/leads/create accepts unlimited anonymous writes (no auth, no rate limit, no CSRF); reproduced: 3 unauthenticated POSTs persisted rows. Impact 3 (PII table pollution + disk growth), likelihood 4 -> 7.0 HIGH."
+}

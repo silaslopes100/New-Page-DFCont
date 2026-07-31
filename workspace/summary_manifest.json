@@ -1,0 +1,435 @@
+{
+  "directories": {
+    "backend": [
+      {
+        "name": "requirements.txt",
+        "lines": 8
+      }
+    ],
+    "backend\\app": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      },
+      {
+        "name": "main.py",
+        "lines": 34
+      }
+    ],
+    "backend\\app\\api": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      }
+    ],
+    "backend\\app\\api\\models": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      },
+      {
+        "name": "calculator.py",
+        "lines": 19
+      },
+      {
+        "name": "contact.py",
+        "lines": 15
+      },
+      {
+        "name": "lead.py",
+        "lines": 32
+      },
+      {
+        "name": "plan.py",
+        "lines": 33
+      }
+    ],
+    "backend\\app\\api\\routes": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      },
+      {
+        "name": "calculator.py",
+        "lines": 14
+      },
+      {
+        "name": "contact.py",
+        "lines": 12
+      },
+      {
+        "name": "lead.py",
+        "lines": 16
+      },
+      {
+        "name": "plans.py",
+        "lines": 48
+      }
+    ],
+    "backend\\app\\core": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      },
+      {
+        "name": "config.py",
+        "lines": 24
+      },
+      {
+        "name": "database.py",
+        "lines": 24
+      }
+    ],
+    "backend\\app\\services": [
+      {
+        "name": "__init__.py",
+        "lines": 0
+      },
+      {
+        "name": "calculator_service.py",
+        "lines": 95
+      },
+      {
+        "name": "lead_service.py",
+        "lines": 17
+      }
+    ],
+    "frontend": [
+      {
+        "name": ".gitignore",
+        "lines": 24
+      },
+      {
+        "name": ".oxlintrc.json",
+        "lines": 8
+      },
+      {
+        "name": "README.md",
+        "lines": 16
+      },
+      {
+        "name": "index.html",
+        "lines": 17
+      },
+      {
+        "name": "package.json",
+        "lines": 28
+      },
+      {
+        "name": "vite.config.js",
+        "lines": 15
+      }
+    ],
+    "frontend\\public": [
+      {
+        "name": "diana-video.mp4",
+        "lines": 10371
+      },
+      {
+        "name": "diana.svg",
+        "lines": 19
+      },
+      {
+        "name": "favicon.svg",
+        "lines": 1
+      },
+      {
+        "name": "hero-bg.mp4",
+        "lines": 26825
+      },
+      {
+        "name": "icons.svg",
+        "lines": 24
+      },
+      {
+        "name": "logo.png",
+        "lines": 122
+      }
+    ],
+    "frontend\\src": [
+      {
+        "name": "App.css",
+        "lines": 184
+      },
+      {
+        "name": "App.jsx",
+        "lines": 29
+      },
+      {
+        "name": "index.css",
+        "lines": 111
+      },
+      {
+        "name": "main.jsx",
+        "lines": 11
+      }
+    ],
+    "frontend\\src\\assets": [
+      {
+        "name": "hero.png",
+        "lines": 53
+      },
+      {
+        "name": "react.svg",
+        "lines": 1
+      },
+      {
+        "name": "vite.svg",
+        "lines": 1
+      }
+    ],
+    "frontend\\src\\components": [],
+    "frontend\\src\\components\\common": [],
+    "frontend\\src\\components\\common\\Button": [
+      {
+        "name": "Button.css",
+        "lines": 122
+      },
+      {
+        "name": "Button.jsx",
+        "lines": 32
+      }
+    ],
+    "frontend\\src\\components\\common\\Card": [
+      {
+        "name": "Card.css",
+        "lines": 50
+      },
+      {
+        "name": "Card.jsx",
+        "lines": 34
+      }
+    ],
+    "frontend\\src\\components\\common\\Footer": [
+      {
+        "name": "Footer.css",
+        "lines": 116
+      },
+      {
+        "name": "Footer.jsx",
+        "lines": 99
+      }
+    ],
+    "frontend\\src\\components\\common\\Input": [
+      {
+        "name": "Input.css",
+        "lines": 160
+      },
+      {
+        "name": "Input.jsx",
+        "lines": 160
+      }
+    ],
+    "frontend\\src\\components\\common\\Modal": [
+      {
+        "name": "Modal.css",
+        "lines": 80
+      },
+      {
+        "name": "Modal.jsx",
+        "lines": 52
+      }
+    ],
+    "frontend\\src\\components\\common\\Navbar": [
+      {
+        "name": "Navbar.css",
+        "lines": 222
+      },
+      {
+        "name": "Navbar.jsx",
+        "lines": 101
+      }
+    ],
+    "frontend\\src\\components\\pages": [],
+    "frontend\\src\\components\\pages\\About": [
+      {
+        "name": "About.css",
+        "lines": 130
+      },
+      {
+        "name": "About.jsx",
+        "lines": 88
+      }
+    ],
+    "frontend\\src\\components\\pages\\Blog": [
+      {
+        "name": "Blog.css",
+        "lines": 74
+      },
+      {
+        "name": "Blog.jsx",
+        "lines": 109
+      }
+    ],
+    "frontend\\src\\components\\pages\\ComoFunciona": [
+      {
+        "name": "ComoFunciona.css",
+        "lines": 111
+      },
+      {
+        "name": "ComoFunciona.jsx",
+        "lines": 78
+      }
+    ],
+    "frontend\\src\\components\\pages\\Contact": [
+      {
+        "name": "Contact.css",
+        "lines": 145
+      },
+      {
+        "name": "Contact.jsx",
+        "lines": 164
+      }
+    ],
+    "frontend\\src\\components\\pages\\Home": [
+      {
+        "name": "Home.jsx",
+        "lines": 23
+      }
+    ],
+    "frontend\\src\\components\\pages\\PlansPage": [
+      {
+        "name": "PlansPage.css",
+        "lines": 7
+      },
+      {
+        "name": "PlansPage.jsx",
+        "lines": 27
+      }
+    ],
+    "frontend\\src\\components\\sections": [],
+    "frontend\\src\\components\\sections\\Calculator": [
+      {
+        "name": "Calculator.css",
+        "lines": 228
+      },
+      {
+        "name": "Calculator.jsx",
+        "lines": 208
+      }
+    ],
+    "frontend\\src\\components\\sections\\CTA": [
+      {
+        "name": "CTA.css",
+        "lines": 174
+      },
+      {
+        "name": "CTA.jsx",
+        "lines": 76
+      }
+    ],
+    "frontend\\src\\components\\sections\\FAQ": [
+      {
+        "name": "FAQ.css",
+        "lines": 113
+      },
+      {
+        "name": "FAQ.jsx",
+        "lines": 77
+      }
+    ],
+    "frontend\\src\\components\\sections\\Hero": [
+      {
+        "name": "Hero.css",
+        "lines": 239
+      },
+      {
+        "name": "Hero.jsx",
+        "lines": 355
+      }
+    ],
+    "frontend\\src\\components\\sections\\Plans": [
+      {
+        "name": "Plans.css",
+        "lines": 210
+      },
+      {
+        "name": "Plans.jsx",
+        "lines": 168
+      }
+    ],
+    "frontend\\src\\components\\sections\\Testimonials": [
+      {
+        "name": "Testimonials.css",
+        "lines": 190
+      },
+      {
+        "name": "Testimonials.jsx",
+        "lines": 123
+      }
+    ],
+    "frontend\\src\\hooks": [
+      {
+        "name": "useScrollAnimation.js",
+        "lines": 32
+      }
+    ],
+    "frontend\\src\\services": [
+      {
+        "name": "api.js",
+        "lines": 35
+      }
+    ],
+    "frontend\\src\\styles": [
+      {
+        "name": "animations.css",
+        "lines": 119
+      },
+      {
+        "name": "globals.css",
+        "lines": 116
+      },
+      {
+        "name": "tokens.css",
+        "lines": 53
+      }
+    ]
+  },
+  "historical_learnings": [
+    {
+      "title": "Initial import: full FastAPI+React app baseline (no prior security fixes)",
+      "description": "Root commit introducing the whole codebase. No vulnerabilities fixed (nothing existed before). Security posture introduced: backend (backend/app) exposes unauthenticated FastAPI endpoints /api/plans, /api/leads/create, /api/contact, /api/calculator; SQLAlchemy+SQLite default DB (backend/app/core/config.py); CORS allow_credentials=True with 3 hardcoded origins (localhost:3000, localhost:5173, dfcont.com.br) and allow_methods/headers=*; lead.py route re-exposes raw exception text via detail=str(e); DEBUG defaults True (docs_url enabled); frontend/src/services/api.js hardcodes API base URL. No auth, no rate limiting, no input sanitization layers exist anywhere.",
+      "code_paths": [
+        "backend/app/main.py:13",
+        "backend/app/core/config.py:17",
+        "backend/app/api/routes/lead.py:16",
+        "backend/app/core/config.py:10",
+        "frontend/src/services/api.js:1"
+      ],
+      "vuln_type": "baseline_initial_import",
+      "mitigation_diff": "",
+      "cve": "",
+      "history": [
+        {
+          "stage": "history_extractor",
+          "action": "created",
+          "details": "Extracted from repository revision history.",
+          "pass_number": 1,
+          "timestamp": "2026-07-31T22:00:37.529171Z"
+        }
+      ],
+      "revision_id": "75791fb62b31ccf11a4991c4c1df0f00b8afa76d"
+    },
+    {
+      "title": "Fix attempt broke backend: self-import of PlanDB inside plan.py causes ImportError",
+      "description": "Committed as \"Update plan and plans modules with necessary imports and adjustments\". Added `from app.api.models.plan import PlanDB` inside plan.py itself (backend/app/api/models/plan.py:6), before the PlanDB class is defined. Verified: importing app.api.routes.plans raises `ImportError: cannot import name 'PlanDB' from partially initialized module`, so the entire FastAPI app fails to start (availability regression). Not a security fix; the only fix in history and it is broken. Downstream: do not assume `import app.api.routes.plans` works; the app currently cannot boot.",
+      "code_paths": [
+        "backend/app/api/models/plan.py:6",
+        "backend/app/api/routes/plans.py:4"
+      ],
+      "vuln_type": "regression_import_error",
+      "mitigation_diff": "Remove self-import line in plan.py (import was already available via the module itself).",
+      "cve": "",
+      "history": [
+        {
+          "stage": "history_extractor",
+          "action": "created",
+          "details": "Extracted from repository revision history.",
+          "pass_number": 1,
+          "timestamp": "2026-07-31T22:00:37.529171Z"
+        }
+      ],
+      "revision_id": "feb5207da9eb1499ef6461ec33dd10fd59aea9d6"
+    }
+  ]
+}

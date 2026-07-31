@@ -1,0 +1,215 @@
+{
+  "id": "a801cc40-0482-4510-86f7-8410a284db8c",
+  "title": "CWE-942: CORS allow_credentials=True with wildcard methods/headers and hardcoded origins",
+  "description": "main.py:13-19 configures CORSMiddleware with allow_credentials=True, allow_methods=['*'], allow_headers=['*'] and allow_origins=settings.CORS_ORIGINS (localhost:3000, localhost:5173, https://dfcont.com.br, hardcoded in config.py:17-21). With credentials enabled, any origin that is or becomes allowlisted can read credentialed responses; the methods/headers wildcards maximize what a compromised/evil page on an allowlisted origin can request. The localhost origins are dev-only and should not exist in a production allowlist; the real deployed origin list is unverified. CORS is defense-in-depth only (server has no auth), but the combination is fragile against allowlist drift.",
+  "impact": "Credential-bearing cross-origin requests permitted broadly; if an attacker ever controls content on an allowlisted origin (or the allowlist drifts), credentialed data and state-changing calls become reachable from the browser.",
+  "severity": "LOW",
+  "privileges_required": "NONE",
+  "attacker_position": "EXTERNAL",
+  "user_interaction": "REQUIRED",
+  "status": "VALID",
+  "code_paths": [
+    "backend/app/main.py:13",
+    "backend/app/core/config.py:17"
+  ],
+  "cwe": "CWE-942",
+  "signature": "4c59ab28da3375aa",
+  "lineage_id": "7941873c-7f40-45eb-bbde-0bdf66584b7a",
+  "mitigation": "Restrict methods/headers to the concrete verbs and headers used; remove localhost origins from the production allowlist; document the exact production origin(s); if credentials are not actually needed, set allow_credentials=False.",
+  "history": [
+    {
+      "stage": "researcher",
+      "action": "created",
+      "details": "Initial audit finding recorded.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:05:28.593179Z"
+    },
+    {
+      "stage": "reviewer",
+      "action": "reviewed",
+      "details": "Determined status as VALID: main.py:13-19 and config.py:17-21 verified: allow_credentials=True, allow_methods/headers '*', 3 hardcoded origins incl. two localhost entries. Factual misconfiguration posture; low severity because no attacker-controlled origin is currently allowlisted and there are no cookies in use - defense-in-d",
+      "pass_number": 1,
+      "snapshot": "--repro_hints",
+      "timestamp": "2026-07-31T22:07:28.254413Z"
+    },
+    {
+      "stage": "critic",
+      "action": "evaluated",
+      "details": "Determined production viability as VIABLE: CORS config with credentials+wildcards is the shipped production configuration; hardening gap present in release builds. Low severity but viable.",
+      "pass_number": 1,
+      "snapshot": "",
+      "timestamp": "2026-07-31T22:07:53.958190Z"
+    },
+    {
+      "stage": "reproduce",
+      "action": "reproduced",
+      "details": "Reproduction status evaluated as reproduced using command: python poc_F3_F6.py (TestClient preflight)",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:09:53.006160Z"
+    },
+    {
+      "action": "patch_verified",
+      "timestamp": "2026-07-31T22:22:25Z",
+      "patch_status": "VERIFIED_SECURE"
+    },
+    {
+      "stage": "calibrate",
+      "action": "calibrated",
+      "details": "Calculated risk score as 2.8 and priority as LOW.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:24:32Z"
+    }
+  ],
+  "reasoning": "main.py:13-19 and config.py:17-21 verified: allow_credentials=True, allow_methods/headers '*', 3 hardcoded origins incl. two localhost entries. Factual misconfiguration posture; low severity because no attacker-controlled origin is currently allowlisted and there are no cookies in use - defense-in-depth gap, keep as LOW hardening item.",
+  "repro_hints": {
+    "build_profile": "python 3.11 default",
+    "assertions_disabled": "n/a (interpreted)",
+    "evidence": "Preflight response headers confirm credentials+wildcard-methods CORS"
+  },
+  "triage_checklist": {
+    "ignore_hypothetical_misuse": {
+      "outcome": "PASS"
+    },
+    "ignore_missing_hygiene": {
+      "outcome": "PASS"
+    },
+    "require_strict_reproducibility": {
+      "outcome": "PASS"
+    },
+    "avoid_pedantic_linting": {
+      "outcome": "PASS"
+    },
+    "no_security_flaw_stretching": {
+      "outcome": "PASS"
+    },
+    "evaluate_questionable_file_paths": {
+      "outcome": "PASS"
+    },
+    "ignore_resource_exhaustion_dos": {
+      "outcome": "PASS"
+    },
+    "intrinsic_security_flaws": {
+      "outcome": "PASS"
+    },
+    "verify_mitigations_pragmatically": {
+      "outcome": "PASS"
+    },
+    "refine_code_paths_strictly": {
+      "outcome": "PASS"
+    },
+    "ignore_simd_vector_padding": {
+      "outcome": "PASS"
+    },
+    "ensure_source_code_coherence": {
+      "outcome": "PASS"
+    },
+    "verify_attacker_control_of_source": {
+      "outcome": "PASS"
+    }
+  },
+  "production_viability": "VIABLE",
+  "critic_reasoning": "CORS config with credentials+wildcards is the shipped production configuration; hardening gap present in release builds. Low severity but viable.",
+  "repro_status": "reproduced",
+  "repro_file_path": "D:\\New Page DFCont\\workspace\\reproducers\\poc_F3_F6.py",
+  "repro_run_command": "python poc_F3_F6.py (TestClient preflight)",
+  "repro_output": "OPTIONS preflight from Origin https://dfcont.com.br returned: access-control-allow-origin: https://dfcont.com.br, access-control-allow-credentials: true, access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT (wildcard expansion), access-control-allow-headers: content-type.",
+  "repro_snapshot_id": "UNPINNED-MODE-OFF",
+  "patch_status": "VERIFIED_SECURE",
+  "patch_verification": {
+    "method": "patched shadow rebuilt, baseline re-triggered, patched attack TIGHTENED, integrity/benign controls OK",
+    "shadow_dir": "C:\\Users\\SILASL~1\\AppData\\Local\\Temp\\opencode\\mantis_patch\\a8_patched",
+    "notes": "CORS credentials off, methods GET/POST/OPTIONS, headers Content-Type; evil origin/DELETE/authorization blocked"
+  },
+  "impact_score": 2,
+  "likelihood_score": 2,
+  "availability_tier": null,
+  "inferred_exposure": "EXPOSED",
+  "mantis_risk_score": 2.8,
+  "priority": "LOW",
+  "sanity_triage_applied": "User Interaction Required",
+  "calibration_checklist": {
+    "repro_failure": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreachable_inputs": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "third_party_reachability": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "minor_config_hygiene": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_security_critical": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "vague_code_paths": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreliable_triggers": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "prerequisite_shell": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_long_term": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_zero_delta": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "standard_host_attacks": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "static_confirmation": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "strict_xss": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "internal_nested": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "probabilistic_llm": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "supply_chain_prerequisites": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_default_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "confidential_computing_host": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_critical_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "local_attack_vector": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "self_contained_blast": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "rarely_exposed": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "equivalent_primitives": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "documented_insecure_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_temporary": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "high_privilege_external": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_standard_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    }
+  },
+  "outrage_commentary": "Low public outrage: abuse requires an allowlisted origin to host attacker content; no active incident vector today.",
+  "executive_summary": "CORS credentials + wildcard methods/headers for 3 hardcoded origins (incl. localhost dev origins). Exploitation needs attacker-controlled content on an allowlisted origin (uncommon). Impact 2, likelihood 2, user-interaction multiplier 0.7 -> 2.8 LOW."
+}

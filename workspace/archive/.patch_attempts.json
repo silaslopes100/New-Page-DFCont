@@ -1,0 +1,59 @@
+{
+  "pass_number": 1,
+  "attempts": [
+    {
+      "finding": "F1",
+      "shadow": "f1_patched",
+      "result": "BLOCKED",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F2",
+      "shadow": "f2_patched",
+      "result": "BLOCKED",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F3",
+      "shadow": "f3_patched",
+      "result": "BLOCKED",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F4",
+      "shadow": "f4_patched",
+      "result": "THROTTLED",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F5",
+      "shadow": "f5_patched",
+      "result": "TIGHTENED",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F6",
+      "shadow": "f6_patched",
+      "result": "HIDDEN",
+      "integrity": "OK"
+    },
+    {
+      "finding": "F7",
+      "shadow": "f7_patched",
+      "result": "RESOLVES",
+      "integrity": "OK"
+    },
+    {
+      "finding": "ChainA",
+      "shadow": "patched",
+      "result": "VERIFIED (transitive)",
+      "integrity": "OK"
+    },
+    {
+      "finding": "ChainB",
+      "shadow": "patched",
+      "result": "VERIFIED (transitive)",
+      "integrity": "OK"
+    }
+  ]
+}

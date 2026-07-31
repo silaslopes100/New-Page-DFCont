@@ -1,0 +1,88 @@
+{
+  "id": "24d811d3-0767-4f51-a7cb-15a3f7f0d0f7",
+  "title": "Vite dev proxy /api -> localhost:8000 with changeOrigin; dev-only exposure if server bound publicly",
+  "description": "vite.config.js:8-13 proxies every /api request to http://localhost:8000 with changeOrigin:true. The dev server listens on default host; if anyone deploys or exposes `vite dev`/`vite preview` (e.g., on a cloud host without a reverse proxy), the proxy becomes an open relay to the backend with Origin spoofing via changeOrigin, and the backend CORS (localhost:3000/5173) would consider the traffic same-origin-compatible. Low likelihood in practice (dev tooling), but no guard prevents it - the repo has no deployment config that would exercise the production path.",
+  "impact": "If dev server is publicly reachable, an open forwarding proxy to the backend and possible misconfig escalation; otherwise informational.",
+  "severity": "LOW",
+  "privileges_required": "NONE",
+  "attacker_position": "EXTERNAL",
+  "user_interaction": "NONE",
+  "status": "FALSE_POSITIVE",
+  "code_paths": [
+    "frontend/vite.config.js:9"
+  ],
+  "cwe": "CWE-441",
+  "signature": "7dda238bfe836867",
+  "lineage_id": "9b9defe2-cb47-47a1-95ea-cae568d4fea9",
+  "mitigation": "Bind the Vite dev server to 127.0.0.1 (server.host='127.0.0.1') and document that only built frontend/dist behind a proper reverse proxy may be exposed.",
+  "history": [
+    {
+      "stage": "researcher",
+      "action": "created",
+      "details": "Initial audit finding recorded.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:05:28.593179Z"
+    },
+    {
+      "stage": "reviewer",
+      "action": "reviewed",
+      "details": "Determined status as FALSE_POSITIVE: Rule 1 (hypothetical misuse): the finding requires deploying the Vite dev/preview server publicly, which no deployment config in the repo suggests; production intent is a static dist build behind a reverse proxy. Rule 2 (hygiene): dev-tooling hardening note, not a triggerable flaw in the intended de",
+      "pass_number": 1,
+      "snapshot": "--checklist",
+      "timestamp": "2026-07-31T22:07:28.254413Z"
+    },
+    {
+      "stage": "critic",
+      "action": "evaluated",
+      "details": "Determined production viability as NON_VIABLE: FALSE_POSITIVE finding (hypothetical misuse); no production deployment exposes the dev server. Logged to memory for completeness.",
+      "pass_number": 1,
+      "snapshot": "",
+      "timestamp": "2026-07-31T22:07:53.958190Z"
+    }
+  ],
+  "reasoning": "Rule 1 (hypothetical misuse): the finding requires deploying the Vite dev/preview server publicly, which no deployment config in the repo suggests; production intent is a static dist build behind a reverse proxy. Rule 2 (hygiene): dev-tooling hardening note, not a triggerable flaw in the intended deployment.",
+  "triage_checklist": {
+    "ignore_hypothetical_misuse": {
+      "outcome": "FAIL",
+      "reason": "Requires the dev server to be deployed publicly - hypothetical misuse; no deployment config exposes it"
+    },
+    "ignore_missing_hygiene": {
+      "outcome": "PASS"
+    },
+    "require_strict_reproducibility": {
+      "outcome": "PASS"
+    },
+    "avoid_pedantic_linting": {
+      "outcome": "PASS"
+    },
+    "no_security_flaw_stretching": {
+      "outcome": "PASS"
+    },
+    "evaluate_questionable_file_paths": {
+      "outcome": "PASS"
+    },
+    "ignore_resource_exhaustion_dos": {
+      "outcome": "PASS"
+    },
+    "intrinsic_security_flaws": {
+      "outcome": "PASS"
+    },
+    "verify_mitigations_pragmatically": {
+      "outcome": "PASS"
+    },
+    "refine_code_paths_strictly": {
+      "outcome": "PASS"
+    },
+    "ignore_simd_vector_padding": {
+      "outcome": "PASS"
+    },
+    "ensure_source_code_coherence": {
+      "outcome": "PASS"
+    },
+    "verify_attacker_control_of_source": {
+      "outcome": "PASS"
+    }
+  },
+  "production_viability": "NON_VIABLE",
+  "critic_reasoning": "FALSE_POSITIVE finding (hypothetical misuse); no production deployment exposes the dev server. Logged to memory for completeness."
+}

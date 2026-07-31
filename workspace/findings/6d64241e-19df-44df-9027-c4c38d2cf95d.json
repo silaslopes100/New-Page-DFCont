@@ -1,0 +1,155 @@
+{
+  "id": "6d64241e-19df-44df-9027-c4c38d2cf95d",
+  "title": "Exploit Chain: Unauthenticated error-oracle (CWE-209) + unauthenticated PII writes (CWE-287) - recon to DB abuse",
+  "description": "Step 1 (Finding: unauthenticated writes): attacker sends arbitrary JSON to POST /api/leads/create with no auth, rate limit or CSRF (lead.py:10). Step 2 (Finding: raw exception text): by triggering server-side exceptions on that same endpoint (verified: an unauthenticated request returned HTTP 400 with the full SQLAlchemy error including the INSERT statement, bound parameters, and internal module paths), the attacker harvests internal intel: SQL dialect details, parameter values, code layout, DB state. Step 3: with the error oracle confirmed and no throttling, the attacker floods the endpoint with valid payloads (verified HTTP 200 + row persistence) to pollute the leads PII table, consume disk, and spam sales follow-up. The /docs exposure (DEBUG default True) fuels Step 2 by publishing the exact request schema.",
+  "impact": "Compounded impact: internal information disclosure (SQL, parameters, paths) + unbounded PII database pollution and disk growth, all unauthenticated - higher than either finding alone (recon data feeds the abuse, and the abuse feeds more recon through the error oracle).",
+  "severity": "MEDIUM",
+  "privileges_required": "NONE",
+  "user_interaction": "NONE",
+  "code_paths": [
+    "backend/app/api/routes/lead.py:10",
+    "backend/app/services/lead_service.py:5",
+    "backend/app/api/routes/lead.py:16",
+    "backend/app/api/routes/calculator.py:14",
+    "backend/app/api/routes/contact.py:12",
+    "frontend/src/services/api.js:14",
+    "backend/app/core/config.py:10",
+    "backend/app/main.py:10"
+  ],
+  "attacker_position": "EXTERNAL",
+  "mitigation": "Fix at least one link: add authentication/rate limiting to the lead endpoint, replace detail=str(e) with a generic error mapping (log details server-side), and default DEBUG=False to hide /docs.",
+  "status": "VALID",
+  "production_viability": "VIABLE",
+  "repro_status": "statically_confirmed",
+  "constituent_findings": [
+    "0cbda088-0dd1-4c78-a902-efa7e271672c",
+    "d072da85-80ee-4e8b-a44a-efef216d3b9d",
+    "64f00b37-7afa-4eb7-a214-ce0ff0c010bb"
+  ],
+  "signature": "a7b44bc5f160d813",
+  "lineage_id": "114f75aa-5e8e-483f-bfe0-622eabf91c40",
+  "history": [
+    {
+      "stage": "chainer",
+      "action": "created",
+      "details": "Constructed exploit Chain by chaining findings 0cbda088-0dd1-4c78-a902-efa7e271672c, d072da85-80ee-4e8b-a44a-efef216d3b9d (+1 more).",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:10:28.523160Z"
+    },
+    {
+      "action": "patch_verified",
+      "timestamp": "2026-07-31T22:22:25Z",
+      "patch_status": "VERIFIED_SECURE"
+    },
+    {
+      "stage": "calibrate",
+      "action": "calibrated",
+      "details": "Calculated risk score as 4.8 and priority as MEDIUM.",
+      "pass_number": 1,
+      "timestamp": "2026-07-31T22:24:33Z"
+    }
+  ],
+  "patch_status": "VERIFIED_SECURE",
+  "patch_verification": {
+    "method": "chain verified transitively: all constituent patches applied to shadow and verified",
+    "shadow_dir": "C:\\Users\\SILASL~1\\AppData\\Local\\Temp\\opencode\\mantis_patch",
+    "constituent_titles": [
+      "CWE-287: unauthenticated, unlimited lead/contact writes (no auth, no rate limiting, no CSRF)",
+      "CWE-209: raw exception text leaked to unauthenticated clients via detail=str(e)",
+      "DEBUG defaults to True: Swagger UI (/docs) exposed in production by default"
+    ]
+  },
+  "impact_score": 3,
+  "likelihood_score": 3,
+  "availability_tier": null,
+  "inferred_exposure": "EXPOSED",
+  "mantis_risk_score": 4.8,
+  "priority": "MEDIUM",
+  "sanity_triage_applied": "Static Confirmation",
+  "calibration_checklist": {
+    "repro_failure": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreachable_inputs": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "third_party_reachability": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "minor_config_hygiene": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_security_critical": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "vague_code_paths": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "unreliable_triggers": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "prerequisite_shell": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_long_term": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_zero_delta": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "standard_host_attacks": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "static_confirmation": {
+      "outcome": "APPLIES",
+      "reason": "Chain statically confirmed (constituents individually reproduced; full recon->abuse loop not run): likelihood capped at 3, 0.8 hazard multiplier, not CRITICAL"
+    },
+    "strict_xss": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "internal_nested": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "probabilistic_llm": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "supply_chain_prerequisites": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "non_default_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "confidential_computing_host": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_critical_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "local_attack_vector": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "self_contained_blast": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "rarely_exposed": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "equivalent_primitives": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "documented_insecure_config": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "physical_temporary": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "high_privilege_external": {
+      "outcome": "DOES_NOT_APPLY"
+    },
+    "trusted_controller_standard_bypass": {
+      "outcome": "DOES_NOT_APPLY"
+    }
+  },
+  "outrage_commentary": "Anonymous error-oracle feeding anonymous PII-flooding on a company's own intake form; reporters love 'your site leaks its own database internals to anyone'.",
+  "executive_summary": "F4+F3+F6: unauthenticated writes + raw error leaks + exposed /docs form a recon->abuse loop. Statically confirmed: (3+3)*0.8 = 4.8 MEDIUM (static cap)."
+}

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "D:\New Page DFCont\workspace\reproducers\poc_F2.py", line 8, in <module>
+    import app.api.routes.contact
+  File "C:\Users\SILASL~1\AppData\Local\Temp\opencode\mantis_shadow\plan_fixed\app\api\routes\contact.py", line 2, in <module>
+    from app.api.models.plan import ContactRequest, ContactResponse
+ImportError: cannot import name 'ContactRequest' from 'app.api.models.plan' (C:\Users\SILASL~1\AppData\Local\Temp\opencode\mantis_shadow\plan_fixed\app\api\models\plan.py)
