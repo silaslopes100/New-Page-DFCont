@@ -138,6 +138,7 @@ export const TextArea = ({
   required = false,
   rows = 4,
   className = '',
+  ...props
 }) => (
   <div className={`input-group ${className}`}>
     {label && (
