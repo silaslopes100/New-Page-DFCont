@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, Float, Boolean, JSON, DateTime
 from app.core.database import Base
 
@@ -17,7 +17,7 @@ class PlanDB(Base):
     badge = Column(String(50), nullable=True)
     features = Column(JSON, default=[])
     highlight = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class PlanResponse(BaseModel):

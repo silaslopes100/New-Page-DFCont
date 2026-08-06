@@ -1,0 +1,40 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Boot smoke test (app must import cleanly)
+        run: python -c "from app.main import app; assert app"
+
+      - name: Validate Alembic migrations apply cleanly
+        run: |
+          rm -f dfcont_ci.db
+          DATABASE_URL="sqlite:///./dfcont_ci.db" alembic upgrade head
+          rm -f dfcont_ci.db
+
+      - name: Run test suite
+        run: python -m pytest -v

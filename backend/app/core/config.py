@@ -14,11 +14,17 @@ class Settings:
         "sqlite:///./dfcont.db"
     )
 
-    CORS_ORIGINS: list = [
+    _default_cors_origins = [
         "http://localhost:3000",
         "http://localhost:5173",
         "https://dfcont.com.br",
     ]
+    _cors_env = os.getenv("CORS_ORIGINS")
+    CORS_ORIGINS: list = (
+        [origin.strip() for origin in _cors_env.split(",") if origin.strip()]
+        if _cors_env
+        else _default_cors_origins
+    )
 
 
 settings = Settings()
