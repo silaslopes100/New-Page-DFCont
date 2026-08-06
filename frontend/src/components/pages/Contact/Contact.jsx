@@ -74,7 +74,7 @@ export const Contact = () => {
                   </svg>
                   <div>
                     <strong>Telefone</strong>
-                    <p>(11) 99999-8888</p>
+                    <p>(11) 94527-7005</p>
                   </div>
                 </div>
                 <div className="contact-detail">
@@ -133,7 +133,7 @@ export const Contact = () => {
                     label="Telefone"
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
-                    placeholder="(11) 99999-8888"
+                    placeholder="(11) 94527-7005"
                   />
                   <Select
                     label="Assunto"
