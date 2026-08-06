@@ -4,7 +4,7 @@ import './Input.css';
 export const Input = ({
   label,
   type = 'text',
-  value,
+  value = '',
   onChange,
   placeholder = '',
   error,
@@ -34,7 +34,7 @@ export const Input = ({
 
 export const Select = ({
   label,
-  value,
+  value = '',
   onChange,
   options,
   placeholder = 'Selecione...',
@@ -131,7 +131,7 @@ export const Toggle = ({
 
 export const TextArea = ({
   label,
-  value,
+  value = '',
   onChange,
   placeholder = '',
   error,

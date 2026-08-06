@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -288,7 +287,7 @@ export const Hero = () => {
   ];
 
   return (
-    <div ref={containerRef} className="hero-container cosmos-style">
+    <div ref={containerRef} id="hero" className="hero-container cosmos-style">
       <video
         ref={videoRef}
         className="hero-video-bg"
@@ -314,12 +313,12 @@ export const Hero = () => {
           </div>
 
           <div ref={ctaRef} className="hero-cta" style={{ visibility: 'hidden' }}>
-            <Link to="/planos">
+            <a href="#planos">
               <Button variant="primary" size="large">Conheça nossos planos</Button>
-            </Link>
-            <Link to="/contato">
+            </a>
+            <a href="#contato">
               <Button variant="secondary" size="large">Fale conosco</Button>
-            </Link>
+            </a>
           </div>
 
           <div ref={statsRef} className="hero-stats" style={{ visibility: 'hidden' }}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '../../common/Button/Button';
-import { Select, NumberInput, Toggle } from '../../common/Input/Input';
-import { calculatorAPI } from '../../../services/api';
+import { Input, Select, NumberInput, Toggle } from '../../common/Input/Input';
+import { calculatorAPI, leadAPI } from '../../../services/api';
 import './Calculator.css';
 
 const activityOptions = [
@@ -35,6 +35,10 @@ const initialForm = {
   toggle: 'Vou abrir empresa',
   activity: '',
   employees: 0,
+  name: '',
+  email: '',
+  phone: '',
+  city: '',
   routine: '',
   contact: '',
   benefits: 'Não',
@@ -57,6 +61,14 @@ export const Calculator = () => {
     setStep(2);
   };
 
+  const nextStepFromLead = () => {
+    if (!formData.name || !formData.email || !formData.phone) {
+      setError('Preencha nome, e-mail e telefone para continuar');
+      return;
+    }
+    setStep(3);
+  };
+
   const calculatePlan = async () => {
     if (!formData.routine) { setError('Selecione sua preferência de rotina'); return; }
     if (!formData.contact) { setError('Selecione sua preferência de contato'); return; }
@@ -64,6 +76,14 @@ export const Calculator = () => {
     setError('');
 
     try {
+      const leadPayload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        city: formData.city || undefined,
+        activity: formData.activity,
+        origin: 'calculator',
+      };
       const payload = {
         toggle: formData.toggle === 'Vou abrir empresa' ? 'abertura' : 'migracao',
         activity: formData.activity,
@@ -72,8 +92,11 @@ export const Calculator = () => {
         contact: formData.contact,
         benefits: formData.benefits === 'Sim',
       };
-      const response = await calculatorAPI.calculate(payload);
-      setResult(response.data);
+      const [, calcResponse] = await Promise.all([
+        leadAPI.create(leadPayload),
+        calculatorAPI.calculate(payload),
+      ]);
+      setResult(calcResponse.data);
     } catch (err) {
       setError(err.message || 'Erro ao calcular. Tente novamente.');
     } finally {
@@ -127,6 +150,55 @@ export const Calculator = () => {
 
             {step >= 2 && (
               <>
+                <Input
+                  label="Nome completo"
+                  value={formData.name}
+                  onChange={(e) => updateField('name', e.target.value)}
+                  placeholder="Seu nome"
+                  required
+                />
+
+                <Input
+                  label="E-mail"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => updateField('email', e.target.value)}
+                  placeholder="seu@email.com"
+                  required
+                />
+
+                <Input
+                  label="Telefone / WhatsApp"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => updateField('phone', e.target.value)}
+                  placeholder="(00) 00000-0000"
+                  required
+                />
+
+                <Input
+                  label="Cidade"
+                  value={formData.city}
+                  onChange={(e) => updateField('city', e.target.value)}
+                  placeholder="Sua cidade"
+                />
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                {error && <p className="calculator-error">{error}</p>}
+                <Button variant="primary" size="large" className="btn-full" onClick={nextStepFromLead}>
+                  Continuar
+                </Button>
+                <button className="calculator-back" onClick={() => setStep(1)}>
+                  Voltar
+                </button>
+              </>
+            )}
+
+            {step >= 3 && (
+              <>
                 <Select
                   label="Como você prefere cuidar da rotina da sua empresa?"
                   value={formData.routine}
@@ -164,7 +236,7 @@ export const Calculator = () => {
                   {loading ? 'Calculando...' : 'Calcular meu plano'}
                 </Button>
 
-                <button className="calculator-back" onClick={() => setStep(1)}>
+                <button className="calculator-back" onClick={() => setStep(2)}>
                   Voltar
                 </button>
               </>

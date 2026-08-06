@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '../../common/Button/Button';
 import './CTA.css';
 
@@ -14,12 +13,12 @@ export const CTA = () => {
             enquanto você foca no que realmente importa: fazer seu negócio crescer.
           </p>
           <div className="cta-actions">
-            <Link to="/planos">
+            <a href="#planos">
               <Button variant="primary" size="large">Abra sua empresa grátis</Button>
-            </Link>
-            <Link to="/contato">
+            </a>
+            <a href="#contato">
               <Button variant="outline" size="large">Fale com um especialista</Button>
-            </Link>
+            </a>
           </div>
         </div>
 

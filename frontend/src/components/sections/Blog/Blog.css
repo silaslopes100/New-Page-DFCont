@@ -1,24 +1,22 @@
-.blog-page .page-hero {
-  padding: var(--spacing-8) 0 var(--spacing-6);
-  text-align: center;
+.blog {
   background: #0d0d0d;
-  min-height: 300px;
-  display: flex;
-  align-items: center;
 }
 
-.blog-page .page-hero h1 {
+.section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-6);
+}
+
+.section-header h2 {
   color: var(--color-white);
   margin-bottom: var(--spacing-2);
 }
 
-.blog-page .page-hero p {
+.section-header p {
   font-size: 18px;
   color: rgba(255, 255, 255, 0.6);
-}
-
-.blog-posts {
-  background: #0d0d0d;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .blog-grid {

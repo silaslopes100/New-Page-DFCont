@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './Footer.css';
 
 export const Footer = () => {
@@ -7,20 +6,20 @@ export const Footer = () => {
 
   const footerLinks = {
     empresa: [
-      { label: 'Sobre Nós', path: '/sobre' },
-      { label: 'Como Funciona', path: '/como-funciona' },
-      { label: 'Planos', path: '/planos' },
-      { label: 'Blog', path: '/blog' },
-      { label: 'Contato', path: '/contato' },
+      { label: 'Sobre Nós', path: '#sobre' },
+      { label: 'Como Funciona', path: '#como-funciona' },
+      { label: 'Planos', path: '#planos' },
+      { label: 'Blog', path: '#blog' },
+      { label: 'Contato', path: '#contato' },
     ],
     servicos: [
-      { label: 'Abrir Empresa', path: '/planos' },
-      { label: 'Trocar de Contador', path: '/planos' },
-      { label: 'Assessoria Contábil', path: '/planos' },
-      { label: 'Contabilidade Digital', path: '/planos' },
+      { label: 'Abrir Empresa', path: '#planos' },
+      { label: 'Trocar de Contador', path: '#planos' },
+      { label: 'Assessoria Contábil', path: '#planos' },
+      { label: 'Contabilidade Digital', path: '#planos' },
     ],
     suporte: [
-      { label: 'FAQ', path: '/#faq' },
+      { label: 'FAQ', path: '#faq' },
       { label: 'Política de Privacidade', path: '/privacidade' },
       { label: 'Termos de Uso', path: '/termos' },
       { label: 'Segurança', path: '/seguranca' },
@@ -57,7 +56,7 @@ export const Footer = () => {
             <ul className="footer-links">
               {footerLinks.empresa.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="footer-link">{link.label}</Link>
+                  <a href={link.path} className="footer-link">{link.label}</a>
                 </li>
               ))}
             </ul>
@@ -68,7 +67,7 @@ export const Footer = () => {
             <ul className="footer-links">
               {footerLinks.servicos.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="footer-link">{link.label}</Link>
+                  <a href={link.path} className="footer-link">{link.label}</a>
                 </li>
               ))}
             </ul>
@@ -79,7 +78,7 @@ export const Footer = () => {
             <ul className="footer-links">
               {footerLinks.suporte.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="footer-link">{link.label}</Link>
+                  <a href={link.path} className="footer-link">{link.label}</a>
                 </li>
               ))}
             </ul>

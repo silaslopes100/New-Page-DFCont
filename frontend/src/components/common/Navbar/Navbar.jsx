@@ -1,13 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../Button/Button';
 import './Navbar.css';
+
+const navLinks = [
+  { id: 'hero', label: 'Home' },
+  { id: 'planos', label: 'Planos' },
+  { id: 'como-funciona', label: 'Como Funciona' },
+  { id: 'sobre', label: 'Sobre' },
+  { id: 'blog', label: 'Blog' },
+  { id: 'contato', label: 'Contato' },
+];
+
+const services = [
+  { label: 'Abrir Empresa', id: 'planos' },
+  { label: 'Trocar de Contador', id: 'planos' },
+  { label: 'Assessoria Contábil', id: 'planos' },
+];
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const location = useLocation();
+  const [activeSection, setActiveSection] = useState('hero');
+  const observerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,31 +33,44 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.getElementById(link.id))
+      .filter(Boolean);
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+
+    sections.forEach((section) => observerRef.current.observe(section));
+
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  const goToSection = (id) => (e) => {
+    e.preventDefault();
     setIsMobileOpen(false);
     setIsDropdownOpen(false);
-  }, [location]);
 
-  const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/planos', label: 'Planos' },
-    { path: '/como-funciona', label: 'Como Funciona' },
-    { path: '/sobre', label: 'Sobre' },
-    { path: '/blog', label: 'Blog' },
-    { path: '/contato', label: 'Contato' },
-  ];
-
-  const services = [
-    { label: 'Abrir Empresa', path: '/planos' },
-    { label: 'Trocar de Contador', path: '/planos' },
-    { label: 'Assessoria Contábil', path: '/planos' },
-  ];
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-container glass-panel">
-        <Link to="/" className="navbar-logo">
+        <a href="#hero" onClick={goToSection('hero')} className="navbar-logo">
           <img src="/logo.png" alt="DFCont Assessoria Contábil" className="logo-img" />
-        </Link>
+        </a>
 
         <div className={`navbar-menu ${isMobileOpen ? 'navbar-menu-open' : ''}`}>
           <div className="navbar-links">
@@ -60,27 +88,28 @@ export const Navbar = () => {
               {isDropdownOpen && (
                 <div className="dropdown-menu glass-panel">
                   {services.map((service) => (
-                    <Link key={service.label} to={service.path} className="dropdown-item">
+                    <a key={service.label} href={`#${service.id}`} onClick={goToSection(service.id)} className="dropdown-item">
                       {service.label}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
             </div>
 
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`navbar-link ${location.pathname === link.path ? 'navbar-link-active' : ''}`}
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={goToSection(link.id)}
+                className={`navbar-link ${activeSection === link.id ? 'navbar-link-active' : ''}`}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
           </div>
 
           <div className="navbar-actions">
-            <Button variant="primary" size="medium" onClick={() => window.location.href = '/planos'}>
+            <Button variant="primary" size="medium" onClick={goToSection('calculadora')}>
               Abra sua Empresa
             </Button>
           </div>
