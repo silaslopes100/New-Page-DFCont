@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 from pydantic import BaseModel, EmailStr, Field
+from typing import Optional
 from sqlalchemy import Column, Integer, String, DateTime
 from app.core.database import Base
 
@@ -8,7 +9,7 @@ from app.core.database import Base
 class ContactRequest(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
     email: EmailStr
-    phone: str = Field(..., min_length=8, max_length=20)
+    phone: Optional[str] = Field(None, max_length=20)
     message: str = Field(..., min_length=1, max_length=2000)
 
 

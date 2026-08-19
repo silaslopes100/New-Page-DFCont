@@ -14,6 +14,9 @@ from app.main import app
 @pytest.fixture(scope="session", autouse=True)
 def _cleanup_test_db():
     yield
+    from app.core.database import engine
+
+    engine.dispose()
     if os.path.exists(TEST_DB_PATH):
         os.remove(TEST_DB_PATH)
 

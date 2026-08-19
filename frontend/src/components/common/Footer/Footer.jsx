@@ -1,4 +1,5 @@
 import React from 'react';
+import { NAV_SECTIONS } from '../../../config/site';
 import './Footer.css';
 
 export const Footer = () => {
@@ -6,20 +7,20 @@ export const Footer = () => {
 
   const footerLinks = {
     empresa: [
-      { label: 'Sobre Nós', path: '#sobre' },
-      { label: 'Como Funciona', path: '#como-funciona' },
-      { label: 'Planos', path: '#planos' },
-      { label: 'Blog', path: '#blog' },
-      { label: 'Contato', path: '#contato' },
+      { label: 'Sobre Nós', path: `#${NAV_SECTIONS.sobre}` },
+      { label: 'Como Funciona', path: `#${NAV_SECTIONS.comoFunciona}` },
+      { label: 'Planos', path: `#${NAV_SECTIONS.planos}` },
+      { label: 'Blog', path: `#${NAV_SECTIONS.blog}` },
+      { label: 'Contato', path: `#${NAV_SECTIONS.contato}` },
     ],
     servicos: [
-      { label: 'Abrir Empresa', path: '#planos' },
-      { label: 'Trocar de Contador', path: '#planos' },
-      { label: 'Assessoria Contábil', path: '#planos' },
-      { label: 'Contabilidade Digital', path: '#planos' },
+      { label: 'Abrir Empresa', path: `#${NAV_SECTIONS.planos}` },
+      { label: 'Trocar de Contador', path: `#${NAV_SECTIONS.planos}` },
+      { label: 'Assessoria Contábil', path: `#${NAV_SECTIONS.planos}` },
+      { label: 'Contabilidade Digital', path: `#${NAV_SECTIONS.planos}` },
     ],
     suporte: [
-      { label: 'FAQ', path: '#faq' },
+      { label: 'FAQ', path: `#${NAV_SECTIONS.faq}` },
       { label: 'Política de Privacidade', path: '/privacidade' },
       { label: 'Termos de Uso', path: '/termos' },
       { label: 'Segurança', path: '/seguranca' },

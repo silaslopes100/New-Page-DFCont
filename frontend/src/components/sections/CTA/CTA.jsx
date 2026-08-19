@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button } from '../../common/Button/Button';
+import { buildWhatsAppUrl, NAV_SECTIONS } from '../../../config/site';
 import './CTA.css';
 
 export const CTA = () => {
   return (
-    <section className="cta section">
+    <section className="cta section" id="cta">
       <div className="container">
         <div className="cta-header animate-on-scroll">
           <h2>A hora de investir no sucesso da sua empresa é agora</h2>
@@ -13,10 +14,14 @@ export const CTA = () => {
             enquanto você foca no que realmente importa: fazer seu negócio crescer.
           </p>
           <div className="cta-actions">
-            <a href="#planos">
+            <a href={`#${NAV_SECTIONS.planos}`}>
               <Button variant="primary" size="large">Abra sua empresa grátis</Button>
             </a>
-            <a href="#contato">
+            <a
+              href={buildWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="outline" size="large">Fale com um especialista</Button>
             </a>
           </div>

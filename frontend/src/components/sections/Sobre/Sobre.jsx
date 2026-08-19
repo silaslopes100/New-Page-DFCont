@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../../common/Button/Button';
+import { NAV_SECTIONS } from '../../../config/site';
 import './Sobre.css';
 
 const values = [
@@ -27,7 +28,7 @@ export const Sobre = () => {
                 completas em contabilidade digital, abertura de empresas, assessoria fiscal e
                 trabalhista, e planejamento tributário.
               </p>
-              <a href="#planos">
+              <a href={`#${NAV_SECTIONS.planos}`}>
                 <Button variant="primary" size="large">Conheça nossos planos</Button>
               </a>
             </div>

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Button } from '../../common/Button/Button';
 import { Input, Select, NumberInput, Toggle } from '../../common/Input/Input';
 import { calculatorAPI, leadAPI } from '../../../services/api';
+import { buildWhatsAppUrl } from '../../../config/site';
+import { isValidEmail, isValidBrazilianPhone, normalizePhone, formatPhoneMask } from '../../../utils/validation';
+import { formatBRL } from '../../../utils/format';
 import './Calculator.css';
 
 const activityOptions = [
@@ -44,59 +47,100 @@ const initialForm = {
   benefits: 'Não',
 };
 
+const initialErrors = {};
+
 export const Calculator = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(initialForm);
+  const [errors, setErrors] = useState(initialErrors);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
     setError('');
+    setWarning('');
+  };
+
+  const validateLeadFields = () => {
+    const nextErrors = {};
+    if (!formData.name.trim()) nextErrors.name = 'Informe seu nome completo';
+    if (!formData.email.trim()) nextErrors.email = 'Informe seu e-mail';
+    else if (!isValidEmail(formData.email)) nextErrors.email = 'Informe um e-mail válido';
+    if (!formData.phone.trim()) nextErrors.phone = 'Informe seu telefone/WhatsApp';
+    else if (!isValidBrazilianPhone(formData.phone)) nextErrors.phone = 'Informe um telefone válido com DDD';
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   const nextStep = () => {
-    if (!formData.activity) { setError('Selecione uma atividade'); return; }
+    if (!formData.activity) {
+      setError('Selecione uma atividade');
+      return;
+    }
     setStep(2);
   };
 
   const nextStepFromLead = () => {
-    if (!formData.name || !formData.email || !formData.phone) {
-      setError('Preencha nome, e-mail e telefone para continuar');
+    if (!validateLeadFields()) {
+      setError('Preencha corretamente os campos obrigatórios');
       return;
     }
     setStep(3);
   };
 
   const calculatePlan = async () => {
+    if (loading) return;
     if (!formData.routine) { setError('Selecione sua preferência de rotina'); return; }
     if (!formData.contact) { setError('Selecione sua preferência de contato'); return; }
     setLoading(true);
     setError('');
+    setWarning('');
 
     try {
       const leadPayload = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        city: formData.city || undefined,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: normalizePhone(formData.phone),
+        city: formData.city.trim() || null,
         activity: formData.activity,
         origin: 'calculator',
+        toggle: formData.toggle === 'Vou abrir empresa' ? 'abertura' : 'migracao',
+        employees: formData.employees,
+        routine: formData.routine,
+        contact: formData.contact,
+        benefits: formData.benefits === 'Sim',
       };
       const payload = {
-        toggle: formData.toggle === 'Vou abrir empresa' ? 'abertura' : 'migracao',
+        toggle: leadPayload.toggle,
         activity: formData.activity,
         employees: formData.employees,
         routine: formData.routine,
         contact: formData.contact,
         benefits: formData.benefits === 'Sim',
       };
-      const [, calcResponse] = await Promise.all([
+      const [leadResult, calcResult] = await Promise.allSettled([
         leadAPI.create(leadPayload),
         calculatorAPI.calculate(payload),
       ]);
-      setResult(calcResponse.data);
+
+      if (calcResult.status === 'fulfilled') {
+        setResult({
+          ...calcResult.value.data,
+          recommended_plan: calcResult.value.data.recommended_plan,
+          monthly_price: calcResult.value.data.monthly_price ?? calcResult.value.data.price,
+        });
+        if (leadResult.status === 'rejected') {
+          setWarning('Não foi possível registrar seu contato agora, mas seu plano foi calculado.');
+        }
+      } else if (leadResult.status === 'rejected') {
+        setError(leadResult.reason.message || 'Erro ao calcular. Tente novamente.');
+      } else {
+        setError(calcResult.reason?.message || 'Erro ao calcular. Tente novamente.');
+      }
     } catch (err) {
       setError(err.message || 'Erro ao calcular. Tente novamente.');
     } finally {
@@ -104,8 +148,21 @@ export const Calculator = () => {
     }
   };
 
+  const resetAll = () => {
+    setResult(null);
+    setStep(1);
+    setFormData(initialForm);
+    setErrors(initialErrors);
+    setError('');
+    setWarning('');
+  };
+
+  const resultPrice = formatBRL(result?.monthly_price ?? result?.price);
+  const hasBenefits = Array.isArray(result?.benefits) && result.benefits.length > 0;
+
   return (
     <section className="calculator section" id="calculadora">
+      <div className="calculator-bg" aria-hidden="true" />
       <div className="container">
         <div className="calculator-header animate-on-scroll">
           <h2>Descubra o plano ideal para sua empresa</h2>
@@ -129,6 +186,7 @@ export const Calculator = () => {
                 options={activityOptions}
                 placeholder="Selecione sua atividade"
                 required
+                error={errors.activity}
               />
             )}
 
@@ -143,9 +201,12 @@ export const Calculator = () => {
             )}
 
             {step === 1 && (
-              <Button variant="primary" size="large" className="btn-full" onClick={nextStep}>
-                Continuar
-              </Button>
+              <>
+                {error && <p className="calculator-error" role="alert">{error}</p>}
+                <Button variant="primary" size="large" className="btn-full" onClick={nextStep}>
+                  Continuar
+                </Button>
+              </>
             )}
 
             {step >= 2 && (
@@ -156,6 +217,7 @@ export const Calculator = () => {
                   onChange={(e) => updateField('name', e.target.value)}
                   placeholder="Seu nome"
                   required
+                  error={errors.name}
                 />
 
                 <Input
@@ -165,15 +227,17 @@ export const Calculator = () => {
                   onChange={(e) => updateField('email', e.target.value)}
                   placeholder="seu@email.com"
                   required
+                  error={errors.email}
                 />
 
                 <Input
                   label="Telefone / WhatsApp"
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => updateField('phone', e.target.value)}
+                  onChange={(e) => updateField('phone', formatPhoneMask(e.target.value))}
                   placeholder="(00) 00000-0000"
                   required
+                  error={errors.phone}
                 />
 
                 <Input
@@ -187,7 +251,7 @@ export const Calculator = () => {
 
             {step === 2 && (
               <>
-                {error && <p className="calculator-error">{error}</p>}
+                {error && <p className="calculator-error" role="alert">{error}</p>}
                 <Button variant="primary" size="large" className="btn-full" onClick={nextStepFromLead}>
                   Continuar
                 </Button>
@@ -224,7 +288,8 @@ export const Calculator = () => {
                   onChange={(val) => updateField('benefits', val)}
                 />
 
-                {error && <p className="calculator-error">{error}</p>}
+                {error && <p className="calculator-error" role="alert">{error}</p>}
+                {warning && <p className="calculator-warning" role="status">{warning}</p>}
 
                 <Button
                   variant="primary"
@@ -247,27 +312,37 @@ export const Calculator = () => {
             <div className="calculator-result-centered">
               <div className="result-card glass-panel">
                 <div className="result-badge">Plano Recomendado</div>
-                <h3 className="result-plan-name">{result.recommended_plan}</h3>
+                <h3 className="result-plan-name">{result.recommended_plan || 'Plano personalizado'}</h3>
                 <div className="result-price">
-                  <span className="result-price-value">R$ {result.monthly_price?.toFixed(2) || result.price?.toFixed(2)}</span>
+                  <span className="result-price-value">{resultPrice || '—'}</span>
                   <span className="result-price-period">/mês</span>
                 </div>
-                <p className="result-description">{result.description}</p>
-                <div className="result-benefits">
-                  <h4>Benefícios inclusos:</h4>
-                  <ul>
-                    {(result.benefits || []).map((b, i) => (
-                      <li key={i}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#22C55E"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <Button variant="primary" size="large" className="btn-full">
-                  Contratar Plano
-                </Button>
-                <button className="calculator-back" onClick={() => { setResult(null); setStep(1); setFormData(initialForm); }}>
+                {result.description && <p className="result-description">{result.description}</p>}
+                {hasBenefits ? (
+                  <div className="result-benefits">
+                    <h4>Benefícios inclusos:</h4>
+                    <ul>
+                      {result.benefits.map((b, i) => (
+                        <li key={i}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="#22C55E"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="result-description">Sem benefícios adicionais inclusos neste plano.</p>
+                )}
+                <a
+                  href={buildWhatsAppUrl(`Olá, gostaria de contratar o plano ${result.recommended_plan || ''} da DFCont.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="primary" size="large" className="btn-full">
+                    Contratar Plano
+                  </Button>
+                </a>
+                <button className="calculator-back" onClick={resetAll}>
                   Recalcular
                 </button>
               </div>

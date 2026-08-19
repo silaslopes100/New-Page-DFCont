@@ -1,5 +1,25 @@
 .plans {
+  position: relative;
   background: #0d0d0d;
+}
+
+.plans-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg, rgba(13, 13, 13, 0.9) 0%, rgba(13, 13, 13, 0.84) 45%, rgba(13, 13, 13, 0.94) 100%),
+    radial-gradient(circle at 85% 15%, rgba(201, 168, 76, 0.10), transparent 45%),
+    url('/bg-plans.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.plans .container {
+  position: relative;
+  z-index: 1;
 }
 
 .plans-header {
@@ -158,6 +178,7 @@
 
 .features-table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -165,6 +186,7 @@
 
 .features-table {
   width: 100%;
+  min-width: 480px;
   border-collapse: collapse;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
@@ -203,8 +225,27 @@
   width: 100%;
 }
 
+.btn-full-link {
+  display: block;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .plans-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .plans-bg {
+    background-image:
+      linear-gradient(180deg, rgba(13, 13, 13, 0.95) 0%, rgba(13, 13, 13, 0.9) 50%, rgba(13, 13, 13, 0.96) 100%),
+      radial-gradient(circle at 85% 15%, rgba(201, 168, 76, 0.08), transparent 45%),
+      url('/bg-plans.jpg');
+    background-position: 30% center;
+  }
+
+  .plans-tabs {
+    max-width: 100%;
   }
 }

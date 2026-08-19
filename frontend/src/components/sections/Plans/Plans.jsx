@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from '../../common/Button/Button';
 import { Card, CardHeader, CardBody, CardFooter } from '../../common/Card/Card';
+import { buildWhatsAppUrl } from '../../../config/site';
 import './Plans.css';
+
+const TABS = [
+  { id: 'servico', label: 'Empresas de Serviço' },
+  { id: 'comercio', label: 'Empresas de Comércio' },
+];
 
 const plansData = {
   servico: [
@@ -64,34 +70,77 @@ const plansData = {
   ],
 };
 
+const comparisonRows = [
+  { label: 'Contabilidade completa', servico: [true, true, true, true], comercio: [true, true] },
+  { label: 'Abertura grátis', servico: [true, true, true, true], comercio: [true, true] },
+  { label: 'Certificado digital', servico: [true, true, true, true], comercio: [true, true] },
+  { label: 'Atendimento via WhatsApp', servico: [false, true, true, true], comercio: [false, true] },
+  { label: 'Assessor dedicado', servico: [false, false, false, true], comercio: [false, true] },
+  { label: 'Benefícios', servico: [false, false, true, false], comercio: [false, false] },
+];
+
 export const Plans = () => {
   const [activeTab, setActiveTab] = useState('servico');
-  const plans = plansData[activeTab];
+  const tabRefs = useRef({});
+  const plans = plansData[activeTab] || plansData.servico;
+
+  const activateTab = (tabId) => {
+    if (plansData[tabId]) setActiveTab(tabId);
+  };
+
+  const handleTabKeyDown = (e, tabId) => {
+    const currentIndex = TABS.findIndex((t) => t.id === tabId);
+    let nextIndex = currentIndex;
+    if (e.key === 'ArrowRight') nextIndex = (currentIndex + 1) % TABS.length;
+    else if (e.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + TABS.length) % TABS.length;
+    else if (e.key === 'Home') nextIndex = 0;
+    else if (e.key === 'End') nextIndex = TABS.length - 1;
+    else return;
+
+    e.preventDefault();
+    const nextTab = TABS[nextIndex];
+    activateTab(nextTab.id);
+    tabRefs.current[nextTab.id]?.focus();
+  };
 
   return (
     <section className="plans section" id="planos">
+      <div className="plans-bg" aria-hidden="true" />
       <div className="container">
         <div className="plans-header animate-on-scroll">
           <h2>Conheça nossos planos</h2>
           <p>Soluções contábeis completas para todos os tamanhos de negócio.</p>
         </div>
 
-        <div className="plans-tabs animate-on-scroll glass-panel">
-          <button
-            className={`plans-tab ${activeTab === 'servico' ? 'plans-tab-active' : ''}`}
-            onClick={() => setActiveTab('servico')}
-          >
-            Empresas de Serviço
-          </button>
-          <button
-            className={`plans-tab ${activeTab === 'comercio' ? 'plans-tab-active' : ''}`}
-            onClick={() => setActiveTab('comercio')}
-          >
-            Empresas de Comércio
-          </button>
+        <div
+          className="plans-tabs animate-on-scroll glass-panel"
+          role="tablist"
+          aria-label="Categorias de planos"
+        >
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              ref={(el) => { tabRefs.current[tab.id] = el; }}
+              className={`plans-tab ${activeTab === tab.id ? 'plans-tab-active' : ''}`}
+              onClick={() => activateTab(tab.id)}
+              onKeyDown={(e) => handleTabKeyDown(e, tab.id)}
+              role="tab"
+              id={`plans-tab-${tab.id}`}
+              aria-selected={activeTab === tab.id}
+              aria-controls={`plans-panel-${tab.id}`}
+              tabIndex={activeTab === tab.id ? 0 : -1}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        <div className="plans-grid">
+        <div
+          className="plans-grid"
+          role="tabpanel"
+          id={`plans-panel-${activeTab}`}
+          aria-labelledby={`plans-tab-${activeTab}`}
+        >
           {plans.map((plan, index) => (
             <div key={plan.id} className="animate-on-scroll" style={{ animationDelay: `${index * 0.1}s` }}>
               <Card highlight={plan.highlight}>
@@ -117,9 +166,16 @@ export const Plans = () => {
                   </ul>
                 </CardBody>
                 <CardFooter>
-                  <Button variant={plan.highlight ? 'primary' : 'outline'} size="large" className="btn-full">
-                    Contratar {plan.name}
-                  </Button>
+                  <a
+                    href={buildWhatsAppUrl(`Olá, gostaria de contratar o plano ${plan.name} (R$ ${plan.price}/mês) da DFCont.`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-full-link"
+                  >
+                    <Button variant={plan.highlight ? 'primary' : 'outline'} size="large" className="btn-full">
+                      Contratar {plan.name}
+                    </Button>
+                  </a>
                 </CardFooter>
               </Card>
             </div>
@@ -132,19 +188,12 @@ export const Plans = () => {
             <table className="features-table">
               <thead>
                 <tr>
-                  <th>Recursos</th>
-                  {plans.map((p) => <th key={p.id}>{p.name}</th>)}
+                  <th scope="col">Recursos</th>
+                  {plans.map((p) => <th scope="col" key={p.id}>{p.name}</th>)}
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { label: 'Contabilidade completa', servico: [true, true, true, true], comercio: [true, true] },
-                  { label: 'Abertura grátis', servico: [true, true, true, true], comercio: [true, true] },
-                  { label: 'Certificado digital', servico: [true, true, true, true], comercio: [true, true] },
-                  { label: 'Atendimento via WhatsApp', servico: [false, true, true, true], comercio: [false, true] },
-                  { label: 'Assessor dedicado', servico: [false, false, false, true], comercio: [false, true] },
-                  { label: 'Benefícios', servico: [false, false, true, false], comercio: [false, false] },
-                ].map((row) => (
+                {comparisonRows.map((row) => (
                   <tr key={row.label}>
                     <td>{row.label}</td>
                     {(activeTab === 'servico' ? row.servico : row.comercio).map((incl, i) => (

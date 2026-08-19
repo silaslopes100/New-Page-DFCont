@@ -1,28 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '../Button/Button';
+import { NAV_LINKS, SERVICES_LINKS, NAV_SECTIONS, scrollToSection } from '../../../config/site';
 import './Navbar.css';
 
-const navLinks = [
-  { id: 'hero', label: 'Home' },
-  { id: 'planos', label: 'Planos' },
-  { id: 'como-funciona', label: 'Como Funciona' },
-  { id: 'sobre', label: 'Sobre' },
-  { id: 'blog', label: 'Blog' },
-  { id: 'contato', label: 'Contato' },
-];
+const goToSection = (id) => (e) => {
+  e.preventDefault();
 
-const services = [
-  { label: 'Abrir Empresa', id: 'planos' },
-  { label: 'Trocar de Contador', id: 'planos' },
-  { label: 'Assessoria Contábil', id: 'planos' },
-];
+  if (window.location.pathname !== '/') {
+    window.location.href = `/#${id}`;
+    return;
+  }
+  scrollToSection(id);
+};
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState(NAV_SECTIONS.hero);
   const observerRef = useRef(null);
+  const navbarRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +30,7 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const sections = navLinks
+    const sections = NAV_LINKS
       .map((link) => document.getElementById(link.id))
       .filter(Boolean);
 
@@ -53,22 +50,67 @@ export const Navbar = () => {
     return () => observerRef.current?.disconnect();
   }, []);
 
-  const goToSection = (id) => (e) => {
-    e.preventDefault();
+  const closeMenus = useCallback(() => {
     setIsMobileOpen(false);
     setIsDropdownOpen(false);
+  }, []);
 
-    if (window.location.pathname !== '/') {
-      window.location.href = `/#${id}`;
-      return;
+  useEffect(() => {
+    if (!isDropdownOpen) return undefined;
+    const handleClickOutside = (e) => {
+      if (navbarRef.current && !navbarRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isDropdownOpen]);
+
+  useEffect(() => {
+    const closeOnEscape = (e) => {
+      if (e.key === 'Escape') closeMenus();
+    };
+    if (isMobileOpen) {
+      document.addEventListener('keydown', closeOnEscape);
+      document.body.style.overflow = 'hidden';
     }
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      document.body.style.overflow = '';
+    };
+  }, [isMobileOpen, closeMenus]);
+
+  const handleNavClick = (id) => (e) => {
+    closeMenus();
+    goToSection(id)(e);
+  };
+
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleDropdownKeyDown = (e) => {
+    if (e.key === 'Escape') setIsDropdownOpen(false);
   };
 
   return (
-    <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="navbar-container glass-panel">
-        <a href="#hero" onClick={goToSection('hero')} className="navbar-logo">
+    <nav
+      ref={navbarRef}
+      className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}
+      aria-label="Navegação principal"
+    >
+      <div className="navbar-container">
+        <div className="navbar-glass glass-panel" aria-hidden="true" />
+
+        <a href="#hero" onClick={handleNavClick(NAV_SECTIONS.hero)} className="navbar-logo">
           <img src="/logo.png" alt="DFCont Assessoria Contábil" className="logo-img" />
         </a>
 
@@ -79,16 +121,29 @@ export const Navbar = () => {
               onMouseEnter={() => setIsDropdownOpen(true)}
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
-              <button className="navbar-link dropdown-trigger">
+              <button
+                className="navbar-link dropdown-trigger"
+                onClick={toggleDropdown}
+                onKeyDown={handleDropdownKeyDown}
+                aria-expanded={isDropdownOpen}
+                aria-haspopup="true"
+                aria-controls="navbar-services-menu"
+              >
                 Serviços
-                <svg className="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <svg className="dropdown-arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                   <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
               {isDropdownOpen && (
-                <div className="dropdown-menu glass-panel">
-                  {services.map((service) => (
-                    <a key={service.label} href={`#${service.id}`} onClick={goToSection(service.id)} className="dropdown-item">
+                <div id="navbar-services-menu" className="dropdown-menu glass-panel" role="menu">
+                  {SERVICES_LINKS.map((service) => (
+                    <a
+                      key={service.label}
+                      href={`#${service.id}`}
+                      onClick={handleNavClick(service.id)}
+                      className="dropdown-item"
+                      role="menuitem"
+                    >
                       {service.label}
                     </a>
                   ))}
@@ -96,11 +151,11 @@ export const Navbar = () => {
               )}
             </div>
 
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                onClick={goToSection(link.id)}
+                onClick={handleNavClick(link.id)}
                 className={`navbar-link ${activeSection === link.id ? 'navbar-link-active' : ''}`}
               >
                 {link.label}
@@ -109,7 +164,7 @@ export const Navbar = () => {
           </div>
 
           <div className="navbar-actions">
-            <Button variant="primary" size="medium" onClick={goToSection('calculadora')}>
+            <Button variant="primary" size="medium" onClick={handleNavClick(NAV_SECTIONS.calculadora)}>
               Abra sua Empresa
             </Button>
           </div>
@@ -118,7 +173,9 @@ export const Navbar = () => {
         <button
           className={`hamburger ${isMobileOpen ? 'hamburger-active' : ''}`}
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          aria-label="Menu"
+          aria-label={isMobileOpen ? 'Fechar menu' : 'Abrir menu'}
+          aria-expanded={isMobileOpen}
+          aria-controls="navbar-menu"
         >
           <span></span>
           <span></span>

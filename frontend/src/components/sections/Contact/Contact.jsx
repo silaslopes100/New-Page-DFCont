@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '../../common/Button/Button';
 import { Input, Select, TextArea } from '../../common/Input/Input';
 import { contactAPI } from '../../../services/api';
+import { buildWhatsAppUrl } from '../../../config/site';
+import { isValidEmail, isValidBrazilianPhone, normalizePhone, formatPhoneMask } from '../../../utils/validation';
 import './Contact.css';
 
 const contactOptions = [
@@ -20,24 +22,43 @@ export const Contact = () => {
     subject: '',
     message: '',
   });
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
     setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      setError('Preencha todos os campos obrigatórios.');
+    const nextErrors = {};
+    if (!formData.name.trim()) nextErrors.name = 'Informe seu nome';
+    if (!formData.email.trim()) nextErrors.email = 'Informe seu e-mail';
+    else if (!isValidEmail(formData.email)) nextErrors.email = 'Informe um e-mail válido';
+    if (formData.phone && !isValidBrazilianPhone(formData.phone)) {
+      nextErrors.phone = 'Informe um telefone válido com DDD';
+    }
+    if (!formData.message.trim()) nextErrors.message = 'Digite sua mensagem';
+
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setError('Preencha corretamente os campos obrigatórios.');
       return;
     }
+
     setLoading(true);
+    setError('');
     try {
-      await contactAPI.send(formData);
+      await contactAPI.send({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone ? normalizePhone(formData.phone) : null,
+        message: formData.message.trim(),
+      });
       setSuccess(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err) {
@@ -61,8 +82,15 @@ export const Contact = () => {
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
                 </svg>
                 <div>
-                  <strong>Telefone</strong>
-                  <p>(11) 94527-7005</p>
+                  <strong>Telefone / WhatsApp</strong>
+                  <a
+                    href={buildWhatsAppUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-detail-link"
+                  >
+                    (11) 94527-7005
+                  </a>
                 </div>
               </div>
               <div className="contact-detail">
@@ -101,13 +129,14 @@ export const Contact = () => {
                 </Button>
               </div>
             ) : (
-              <form className="contact-form" onSubmit={handleSubmit}>
+              <form className="contact-form" onSubmit={handleSubmit} noValidate>
                 <Input
                   label="Nome"
                   value={formData.name}
                   onChange={(e) => updateField('name', e.target.value)}
                   placeholder="Seu nome completo"
                   required
+                  error={fieldErrors.name}
                 />
                 <Input
                   label="E-mail"
@@ -116,12 +145,15 @@ export const Contact = () => {
                   onChange={(e) => updateField('email', e.target.value)}
                   placeholder="seu@email.com"
                   required
+                  error={fieldErrors.email}
                 />
                 <Input
                   label="Telefone"
+                  type="tel"
                   value={formData.phone}
-                  onChange={(e) => updateField('phone', e.target.value)}
+                  onChange={(e) => updateField('phone', formatPhoneMask(e.target.value))}
                   placeholder="(11) 94527-7005"
+                  error={fieldErrors.phone}
                 />
                 <Select
                   label="Assunto"
@@ -136,8 +168,9 @@ export const Contact = () => {
                   onChange={(e) => updateField('message', e.target.value)}
                   placeholder="Digite sua mensagem..."
                   required
+                  error={fieldErrors.message}
                 />
-                {error && <p className="form-error">{error}</p>}
+                {error && <p className="form-error" role="alert">{error}</p>}
                 <Button variant="primary" size="large" className="btn-full" type="submit" disabled={loading}>
                   {loading ? 'Enviando...' : 'Enviar mensagem'}
                 </Button>

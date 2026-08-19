@@ -35,3 +35,17 @@ def test_send_contact_invalid_email_returns_422(client):
     response = client.post("/api/contact/send", json=_payload(email="not-an-email"))
 
     assert response.status_code == 422
+
+
+def test_send_contact_accepts_empty_phone(client):
+    response = client.post("/api/contact/send", json=_payload(phone=""))
+
+    assert response.status_code == 200
+
+
+def test_send_contact_accepts_missing_phone(client):
+    payload = _payload()
+    del payload["phone"]
+    response = client.post("/api/contact/send", json=payload)
+
+    assert response.status_code == 200

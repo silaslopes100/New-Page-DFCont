@@ -18,7 +18,7 @@ async def send_contact(request: ContactRequest, db: Session = Depends(get_db), _
         contact = ContactDB(
             name=request.name,
             email=request.email,
-            phone=request.phone,
+            phone=request.phone or "",
             message=request.message,
         )
         db.add(contact)

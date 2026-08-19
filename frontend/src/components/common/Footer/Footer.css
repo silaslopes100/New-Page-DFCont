@@ -42,8 +42,8 @@
 }
 
 .footer-social a {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-circle);
   background: rgba(255, 255, 255, 0.1);
   display: flex;
@@ -78,6 +78,8 @@
   font-size: var(--font-size-small);
   color: #999;
   transition: color var(--animation-hover-duration) ease;
+  display: inline-block;
+  padding: 4px 0;
 }
 
 .footer-link:hover {

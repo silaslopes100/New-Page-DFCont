@@ -163,8 +163,8 @@
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 16px;
+  height: 16px;
   border-radius: var(--radius-circle);
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.06);
@@ -186,5 +186,11 @@
   }
   .testimonial-text {
     font-size: var(--font-size-body);
+  }
+  .testimonials-carousel {
+    gap: var(--spacing-2);
+  }
+  .testimonial-card {
+    padding: var(--spacing-4) var(--spacing-3);
   }
 }

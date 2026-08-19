@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import './Input.css';
 
 export const Input = ({
@@ -11,26 +11,36 @@ export const Input = ({
   required = false,
   className = '',
   ...props
-}) => (
-  <div className={`input-group ${className}`}>
-    {label && (
-      <label className="input-label">
-        {label}
-        {required && <span className="input-required">*</span>}
-      </label>
-    )}
-    <input
-      className={`input-field ${error ? 'input-error' : ''}`}
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      required={required}
-      {...props}
-    />
-    {error && <span className="input-error-text">{error}</span>}
-  </div>
-);
+}) => {
+  const inputId = useId();
+  return (
+    <div className={`input-group ${className}`}>
+      {label && (
+        <label className="input-label" htmlFor={inputId}>
+          {label}
+          {required && <span className="input-required">*</span>}
+        </label>
+      )}
+      <input
+        id={inputId}
+        className={`input-field ${error ? 'input-error' : ''}`}
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${inputId}-error` : undefined}
+        {...props}
+      />
+      {error && (
+        <span id={`${inputId}-error`} className="input-error-text" role="alert">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};
 
 export const Select = ({
   label,
@@ -41,30 +51,40 @@ export const Select = ({
   error,
   required = false,
   className = '',
-}) => (
-  <div className={`input-group ${className}`}>
-    {label && (
-      <label className="input-label">
-        {label}
-        {required && <span className="input-required">*</span>}
-      </label>
-    )}
-    <select
-      className={`input-field input-select ${error ? 'input-error' : ''}`}
-      value={value}
-      onChange={onChange}
-      required={required}
-    >
-      <option value="" disabled>{placeholder}</option>
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
-    {error && <span className="input-error-text">{error}</span>}
-  </div>
-);
+}) => {
+  const selectId = useId();
+  return (
+    <div className={`input-group ${className}`}>
+      {label && (
+        <label className="input-label" htmlFor={selectId}>
+          {label}
+          {required && <span className="input-required">*</span>}
+        </label>
+      )}
+      <select
+        id={selectId}
+        className={`input-field input-select ${error ? 'input-error' : ''}`}
+        value={value}
+        onChange={onChange}
+        required={required}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${selectId}-error` : undefined}
+      >
+        <option value="" disabled>{placeholder}</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      {error && (
+        <span id={`${selectId}-error`} className="input-error-text" role="alert">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};
 
 export const NumberInput = ({
   label,
@@ -75,6 +95,7 @@ export const NumberInput = ({
   error,
   className = '',
 }) => {
+  const inputId = useId();
   const decrement = () => {
     if (value > min) onChange(value - 1);
   };
@@ -84,10 +105,15 @@ export const NumberInput = ({
 
   return (
     <div className={`input-group ${className}`}>
-      {label && <label className="input-label">{label}</label>}
+      {label && (
+        <label className="input-label" htmlFor={inputId}>
+          {label}
+        </label>
+      )}
       <div className="number-input">
-        <button type="button" className="number-btn" onClick={decrement} disabled={value <= min}>-</button>
+        <button type="button" className="number-btn" onClick={decrement} disabled={value <= min} aria-label="Diminuir">-</button>
         <input
+          id={inputId}
           type="number"
           className={`input-field number-field ${error ? 'input-error' : ''}`}
           value={value}
@@ -97,10 +123,15 @@ export const NumberInput = ({
           }}
           min={min}
           max={max}
+          aria-invalid={error ? true : undefined}
         />
-        <button type="button" className="number-btn" onClick={increment} disabled={value >= max}>+</button>
+        <button type="button" className="number-btn" onClick={increment} disabled={value >= max} aria-label="Aumentar">+</button>
       </div>
-      {error && <span className="input-error-text">{error}</span>}
+      {error && (
+        <span id={`${inputId}-error`} className="input-error-text" role="alert">
+          {error}
+        </span>
+      )}
     </div>
   );
 };
@@ -114,13 +145,14 @@ export const Toggle = ({
 }) => (
   <div className={`input-group ${className}`}>
     {label && <label className="input-label">{label}</label>}
-    <div className="toggle-group">
+    <div className="toggle-group" role="group" aria-label={label}>
       {options.map((opt) => (
         <button
           key={opt}
           type="button"
           className={`toggle-btn ${value === opt ? 'toggle-active' : ''}`}
           onClick={() => onChange(opt)}
+          aria-pressed={value === opt}
         >
           {opt}
         </button>
@@ -139,23 +171,33 @@ export const TextArea = ({
   rows = 4,
   className = '',
   ...props
-}) => (
-  <div className={`input-group ${className}`}>
-    {label && (
-      <label className="input-label">
-        {label}
-        {required && <span className="input-required">*</span>}
-      </label>
-    )}
-    <textarea
-      className={`input-field input-textarea ${error ? 'input-error' : ''}`}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      required={required}
-      rows={rows}
-      {...props}
-    />
-    {error && <span className="input-error-text">{error}</span>}
-  </div>
-);
+}) => {
+  const textareaId = useId();
+  return (
+    <div className={`input-group ${className}`}>
+      {label && (
+        <label className="input-label" htmlFor={textareaId}>
+          {label}
+          {required && <span className="input-required">*</span>}
+        </label>
+      )}
+      <textarea
+        id={textareaId}
+        className={`input-field input-textarea ${error ? 'input-error' : ''}`}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        rows={rows}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${textareaId}-error` : undefined}
+        {...props}
+      />
+      {error && (
+        <span id={`${textareaId}-error`} className="input-error-text" role="alert">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};

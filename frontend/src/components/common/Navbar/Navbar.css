@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 1000;
   background: transparent;
   transition: all 0.4s ease;
   padding: var(--spacing-2) 0;
@@ -16,7 +16,12 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Structural wrapper: keeps overflow visible so the dropdown can expand
+   outside the glass panel. The glass effect lives on the inner visual layer
+   (.navbar-glass), which is the only element allowed to clip. */
 .navbar-container {
+  position: relative;
+  overflow: visible;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--spacing-2) var(--spacing-3);
@@ -25,10 +30,18 @@
   justify-content: space-between;
 }
 
+.navbar-glass {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  border-radius: 0;
+}
+
 .navbar-logo {
   display: flex;
   align-items: center;
-  z-index: 101;
+  z-index: 2;
 }
 
 .logo-img {
@@ -43,6 +56,8 @@
 }
 
 .navbar-menu {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: var(--spacing-5);
@@ -95,19 +110,21 @@
   transition: transform 0.2s ease;
 }
 
-.navbar-dropdown:hover .dropdown-arrow {
+.navbar-dropdown:hover .dropdown-arrow,
+.dropdown-trigger[aria-expanded='true'] .dropdown-arrow {
   transform: rotate(180deg);
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
+  z-index: 1100;
   background: #0d0d0d;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-heavy);
-  min-width: 200px;
+  min-width: 220px;
   padding: var(--spacing-2);
   animation: fadeIn 0.2s ease-out;
 }
@@ -121,9 +138,11 @@
   transition: all var(--animation-hover-duration) ease;
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover,
+.dropdown-item:focus-visible {
   background: rgba(201, 168, 76, 0.12);
   color: var(--color-primary);
+  outline: none;
 }
 
 .navbar-actions {
@@ -140,7 +159,11 @@
   border: none;
   cursor: pointer;
   padding: var(--spacing-1);
-  z-index: 101;
+  z-index: 2;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
 .hamburger span {
@@ -173,8 +196,8 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 300px;
-    height: 100vh;
+    width: min(300px, 85vw);
+    height: 100dvh;
     background: #0d0d0d;
     flex-direction: column;
     align-items: flex-start;
@@ -183,6 +206,8 @@
     transition: right 0.3s ease;
     gap: var(--spacing-3);
     border-left: 1px solid rgba(255, 255, 255, 0.06);
+    overflow-y: auto;
+    z-index: 1100;
   }
 
   .navbar-menu-open {
@@ -218,5 +243,12 @@
 
   .navbar-actions .btn {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .navbar-menu {
+    transition: none;
   }
 }

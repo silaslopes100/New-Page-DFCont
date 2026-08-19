@@ -6,6 +6,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { Button } from '../../common/Button/Button';
+import { buildWhatsAppUrl, NAV_SECTIONS } from '../../../config/site';
 import './Hero.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -313,10 +314,14 @@ export const Hero = () => {
           </div>
 
           <div ref={ctaRef} className="hero-cta" style={{ visibility: 'hidden' }}>
-            <a href="#planos">
+            <a href={`#${NAV_SECTIONS.planos}`}>
               <Button variant="primary" size="large">Conheça nossos planos</Button>
             </a>
-            <a href="#contato">
+            <a
+              href={buildWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="secondary" size="large">Fale conosco</Button>
             </a>
           </div>

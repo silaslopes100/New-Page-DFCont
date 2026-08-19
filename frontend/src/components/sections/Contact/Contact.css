@@ -47,6 +47,16 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.contact-detail-link {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.5);
+  transition: color var(--animation-hover-duration) ease;
+}
+
+.contact-detail-link:hover {
+  color: var(--color-primary);
+}
+
 .contact-form-wrapper {
   background: rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-lg);
