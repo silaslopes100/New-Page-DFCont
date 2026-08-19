@@ -109,8 +109,5 @@ def _compose_lead_body(data: dict) -> str:
         f"Preferência de contato: {_label(data.get('contact'))}",
         f"Benefícios: {_label(data.get('benefits'))}",
         "",
-        "Plano calculado:",
-        f"Plano: {_label(data.get('recommended_plan'))}",
-        f"Valor mensal: {_price(data.get('monthly_price'))}",
     ]
     return "\n".join(lines)
