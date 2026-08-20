@@ -1,6 +1,6 @@
 # DFCont — Relatório Final
 
-## 1. Resumo
+## 1. Resumo 1
 
 Revisão e correção da one page da DFCont (React 19 + Vite em `frontend/`, FastAPI em `backend/`). Todos os 10 itens do escopo foram implementados, com testes automatizados em ambos os lados.
 
