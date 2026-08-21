@@ -350,7 +350,7 @@ export const Calculator = () => {
                   </Button>
                 </a>
                 <button className="calculator-back" onClick={resetAll}>
-                  Recalcular
+                  Recalcular...
                 </button>
               </div>
             </div>
