@@ -334,7 +334,14 @@ export const Calculator = () => {
                   <p className="result-description">Sem benefícios adicionais inclusos neste plano.</p>
                 )}
                 <a
-                  href={buildWhatsAppUrl(`Olá, gostaria de contratar o plano ${result.recommended_plan || ''} da DFCont.`)}
+                  href={buildWhatsAppUrl(`Olá, gostaria de contratar o plano ${result.recommended_plan || ''} da DFCont. Segue meus dados:\n
+*Nome:* ${formData.name}
+*E-mail:* ${formData.email}
+*Telefone:* ${formData.phone}
+*Cidade:* ${formData.city}
+*Atividade:* ${formData.activity}
+*Número de sócios/funcionários:* ${formData.employees} 
+*Como você prefere cuidar da contabilidade:* ${formData.routine}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -343,7 +350,7 @@ export const Calculator = () => {
                   </Button>
                 </a>
                 <button className="calculator-back" onClick={resetAll}>
-                  Recalcular
+                  Recalcular...
                 </button>
               </div>
             </div>

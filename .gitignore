@@ -1,0 +1,4 @@
+*.json
+!vercel.json
+.vercel
+.env*
