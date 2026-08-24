@@ -4,10 +4,10 @@ import { NAV_SECTIONS } from '../../../config/site';
 import './Sobre.css';
 
 const values = [
-  { icon: '🤝', title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
-  { icon: '💡', title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
-  { icon: '🎯', title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
-  { icon: '🤲', title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
+  { icon: '/Confianca.png', title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
+  { icon: '/Inovacao.png', title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
+  { icon: '/Excelencia.png', title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
+  { icon: '/Compromisso.png', title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
 ];
 
 export const Sobre = () => {
@@ -63,7 +63,7 @@ export const Sobre = () => {
           <div className="values-grid animate-stagger animate-on-scroll">
             {values.map((v) => (
               <div key={v.title} className="value-card">
-                <span className="value-icon">{v.icon}</span>
+                <img src={v.icon} alt={v.title} className="value-icon" />
                 <h3>{v.title}</h3>
                 <p>{v.text}</p>
               </div>

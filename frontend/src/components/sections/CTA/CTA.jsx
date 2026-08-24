@@ -50,12 +50,12 @@ export const CTA = () => {
                   <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
                 </svg>
               </div>
-              <span className="cta-avatar-name">Diana Assistente DFCont</span>
+              <span className="cta-avatar-name">Assistente DFCont</span>
             </div>
             <div className="cta-chat">
-              <div className="cta-chat-bubble">Olá! Como posso ajudar?</div>
+              <div className="cta-chat-bubble">DFCont Assessoria Contabil! Como posso ajudar?</div>
               <div className="cta-chat-bubble cta-chat-response">Quero abrir minha empresa</div>
-              <div className="cta-chat-bubble">Vou te ajudar com isso! 😊</div>
+              <div className="cta-chat-bubble">Vamos te ajudar com isso! 😊</div>
             </div>
           </div>
 
@@ -72,7 +72,7 @@ export const CTA = () => {
         </div>
 
         <div className="cta-footer animate-on-scroll">
-          <p>Consultoria gratuita sem compromisso. Sua empresa merece o melhor.</p>
+          <p>Consulta gratuita sem compromisso. Sua empresa merece o melhor.</p>
         </div>
       </div>
     </section>

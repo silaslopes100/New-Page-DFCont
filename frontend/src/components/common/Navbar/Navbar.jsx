@@ -116,11 +116,7 @@ export const Navbar = () => {
 
         <div className={`navbar-menu ${isMobileOpen ? 'navbar-menu-open' : ''}`}>
           <div className="navbar-links">
-            <div
-              className="navbar-dropdown"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
+            <div className="navbar-dropdown">
               <button
                 className="navbar-link dropdown-trigger"
                 onClick={toggleDropdown}

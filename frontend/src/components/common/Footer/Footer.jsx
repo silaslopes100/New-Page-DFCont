@@ -10,7 +10,6 @@ export const Footer = () => {
       { label: 'Sobre Nós', path: `#${NAV_SECTIONS.sobre}` },
       { label: 'Como Funciona', path: `#${NAV_SECTIONS.comoFunciona}` },
       { label: 'Planos', path: `#${NAV_SECTIONS.planos}` },
-      { label: 'Blog', path: `#${NAV_SECTIONS.blog}` },
       { label: 'Contato', path: `#${NAV_SECTIONS.contato}` },
     ],
     servicos: [
