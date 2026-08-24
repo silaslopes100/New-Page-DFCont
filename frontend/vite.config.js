@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'https://new-page-df-cont-9x1h5snhy-brostorejs-7265s-projects.vercel.app',
         changeOrigin: true,
       },
     },
