@@ -311,7 +311,7 @@ export const Calculator = () => {
           {result && (
             <div className="calculator-result-centered">
               <div className="result-card glass-panel">
-                <div className="result-badge">Plano Recomendado</div>
+                <div className="result-badge">Plano recomendado</div>
                 <h3 className="result-plan-name">{result.recommended_plan || 'Plano personalizado'}</h3>
                 <div className="result-price">
                   <span className="result-price-value">{resultPrice || '—'}</span>
