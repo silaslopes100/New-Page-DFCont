@@ -111,7 +111,7 @@ export const Navbar = () => {
         <div className="navbar-glass glass-panel" aria-hidden="true" />
 
         <a href="#hero" onClick={handleNavClick(NAV_SECTIONS.hero)} className="navbar-logo">
-          <img src="/logo.png" alt="DFCont Assessoria Contábil" className="logo-img" />
+          <img src="/logo.png" alt="DFCONT CONTABILIDADE DIGITAL" className="logo-img" />
         </a>
 
         <div className={`navbar-menu ${isMobileOpen ? 'navbar-menu-open' : ''}`}>

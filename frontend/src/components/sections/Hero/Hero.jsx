@@ -279,7 +279,7 @@ export const Hero = () => {
     {
       title: 'Sua Empresa',
       highlight: 'Decola com a Gente',
-      subtitle: 'Da abertura ao crescimento, estamos ao seu lado em cada etapa. Mais de 500 empresas confiam na DFCont.',
+      subtitle: 'Da abertura ao crescimento, estamos ao seu lado em cada etapa. Diversas empresas confiam na DFCont.',
     },
   ];
 
@@ -324,7 +324,7 @@ export const Hero = () => {
 
           <div ref={statsRef} className="hero-stats" style={{ visibility: 'hidden' }}>
             <div className="hero-stat-item">
-              <span className="hero-stat-num">+500</span>
+              <span className="hero-stat-num">+</span>
               <span className="hero-stat-lbl">Empresas ativas</span>
             </div>
             <div className="hero-stat-divider" />

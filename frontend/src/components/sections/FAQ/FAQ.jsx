@@ -4,7 +4,7 @@ import './FAQ.css';
 const faqData = [
   {
     question: 'Quanto custa o serviço de contabilidade?',
-    answer: 'Nossos planos começam a partir de R$ 139/mês para empresas de serviço e R$ 245/mês para comércio. O valor exato depende do perfil da sua empresa, número de sócios e serviços adicionais contratados.',
+    answer: 'Nossos planos começam a partir de R$ 197/mês para empresas de serviço e R$ 245/mês para comércio. O valor exato depende do perfil da sua empresa, número de sócios e serviços adicionais contratados.',
   },
   {
     question: 'Preciso ir até o escritório para abrir minha empresa?',
@@ -20,7 +20,7 @@ const faqData = [
   },
   {
     question: 'O certificado digital está incluso nos planos?',
-    answer: 'Sim! Todos os nossos planos incluem certificado digital gratuitamente, válido para uso em todas as operações fiscais e bancárias.',
+    answer: 'Sim! Nosso plano Multibenefícios inclui certificado digital gratuitamente, válido para uso em todas as operações fiscais e bancárias.',
   },
   {
     question: 'Posso contratar benefícios mesmo sendo MEI?',

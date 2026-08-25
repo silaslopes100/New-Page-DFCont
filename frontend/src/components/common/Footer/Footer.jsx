@@ -90,7 +90,7 @@ export const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} DFCont Assessoria Contábil. Todos os direitos reservados.</p>
+          <p>&copy; {currentYear} DFCONT CONTABILIDADE DIGITAL. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

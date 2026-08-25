@@ -24,7 +24,7 @@ export const Sobre = () => {
                 construímos uma sólida reputação baseada em confiança, competência e resultados.
               </p>
               <p>
-                Hoje, atendemos mais de 500 empresas ativas em todo o Brasil, oferecendo soluções
+                Hoje, atendemos diversas empresas ativas em todo o Brasil, oferecendo soluções
                 completas em contabilidade digital, abertura de empresas, assessoria fiscal e
                 trabalhista, e planejamento tributário.
               </p>
@@ -34,7 +34,7 @@ export const Sobre = () => {
             </div>
             <div className="about-stats">
               <div className="stat-card">
-                <span className="stat-number">+500</span>
+                <span className="stat-number">+</span>
                 <span className="stat-label">Empresas ativas</span>
               </div>
               <div className="stat-card">

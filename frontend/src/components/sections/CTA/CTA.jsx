@@ -53,7 +53,7 @@ export const CTA = () => {
               <span className="cta-avatar-name">Assistente DFCont</span>
             </div>
             <div className="cta-chat">
-              <div className="cta-chat-bubble">DFCont Assessoria Contabil! Como posso ajudar?</div>
+              <div className="cta-chat-bubble">DFCONT CONTABILIDADE DIGITAL! Como posso ajudar?</div>
               <div className="cta-chat-bubble cta-chat-response">Quero abrir minha empresa</div>
               <div className="cta-chat-bubble">Vamos te ajudar com isso! 😊</div>
             </div>
