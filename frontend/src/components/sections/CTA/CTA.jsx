@@ -31,7 +31,7 @@ export const CTA = () => {
           <div className="cta-chat-card glass-panel">
             <div className="cta-avatar">
               <img
-                src="/diana.png"
+                src="/frontend/diana.png"
                 alt="Diana Assistente DFCont"
                 className="cta-avatar-img"
                 onError={(e) => {
@@ -62,7 +62,7 @@ export const CTA = () => {
           <div className="cta-video-card glass-panel">
             <video
               className="cta-video"
-              src="/diana-video.mp4"
+              src="/frontend/diana-video.mp4"
               autoPlay
               muted
               loop

@@ -9,9 +9,12 @@ class Settings:
     VERSION: str = "1.0.0"
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
 
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL",
-        "sqlite:///./dfcont.db"
+    _database_url = os.getenv("DATABASE_URL", "sqlite:///./dfcont.db")
+    _running_on_vercel = bool(os.getenv("VERCEL") or os.getenv("NOW_REGION"))
+    DATABASE_URL: str = (
+        "sqlite:////tmp/dfcont.db"
+        if _running_on_vercel and _database_url.startswith("sqlite:///")
+        else _database_url
     )
 
     _default_cors_origins = [

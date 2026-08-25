@@ -288,7 +288,7 @@ export const Hero = () => {
       <video
         ref={videoRef}
         className="hero-video-bg"
-        src="/hero-bg.mp4"
+        src="/frontend/hero-bg.mp4"
         autoPlay
         muted
         loop
