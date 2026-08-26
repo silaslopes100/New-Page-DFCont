@@ -4,10 +4,10 @@ import { NAV_SECTIONS } from '../../../config/site';
 import './Sobre.css';
 
 const values = [
-  { icon: '/Confianca.png', title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
-  { icon: '/Inovacao.png', title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
-  { icon: '/Excelencia.png', title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
-  { icon: '/Compromisso.png', title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
+  { icon: `${import.meta.env.BASE_URL}Confianca.png`, title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
+  { icon: `${import.meta.env.BASE_URL}Inovacao.png`, title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
+  { icon: `${import.meta.env.BASE_URL}Excelencia.png`, title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
+  { icon: `${import.meta.env.BASE_URL}Compromisso.png`, title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
 ];
 
 export const Sobre = () => {

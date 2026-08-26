@@ -41,7 +41,11 @@ export const Testimonials = () => {
   const t = testimonials[activeIndex];
 
   return (
-    <section className="testimonials section section-white" id="depoimentos">
+    <section
+      className="testimonials section section-white"
+      id="depoimentos"
+      style={{ '--testimonials-bg-image': `url(${import.meta.env.BASE_URL}testimonials-bg.jpg)` }}
+    >
       <div className="container">
         <div className="testimonials-header animate-on-scroll">
           <h2>Confira o que nossos clientes falam sobre nós</h2>

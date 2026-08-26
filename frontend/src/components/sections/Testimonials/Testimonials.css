@@ -10,7 +10,7 @@
   z-index: 0;
   background-image:
     linear-gradient(180deg, rgba(13, 13, 13, 0.92) 0%, rgba(13, 13, 13, 0.85) 50%, rgba(13, 13, 13, 0.95) 100%),
-       url('/testimonials-bg.jpg');
+       var(--testimonials-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

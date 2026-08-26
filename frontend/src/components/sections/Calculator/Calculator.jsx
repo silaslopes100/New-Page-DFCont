@@ -162,7 +162,11 @@ export const Calculator = () => {
 
   return (
     <section className="calculator section" id="calculadora">
-      <div className="calculator-bg" aria-hidden="true" />
+      <div
+        className="calculator-bg"
+        aria-hidden="true"
+        style={{ '--calculator-bg-image': `url(${import.meta.env.BASE_URL}bg-calculator.jpg)` }}
+      />
       <div className="container">
         <div className="calculator-header animate-on-scroll">
           <h2>Descubra o plano ideal para sua empresa</h2>

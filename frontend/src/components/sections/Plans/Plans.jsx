@@ -105,7 +105,11 @@ export const Plans = () => {
 
   return (
     <section className="plans section" id="planos">
-      <div className="plans-bg" aria-hidden="true" />
+      <div
+        className="plans-bg"
+        aria-hidden="true"
+        style={{ '--plans-bg-image': `url(${import.meta.env.BASE_URL}bg-plans.jpg)` }}
+      />
       <div className="container">
         <div className="plans-header animate-on-scroll">
           <h2>Conheça nossos planos</h2>

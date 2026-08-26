@@ -5,7 +5,11 @@ import './CTA.css';
 
 export const CTA = () => {
   return (
-    <section className="cta section" id="cta">
+    <section
+      className="cta section"
+      id="cta"
+      style={{ '--cta-bg-image': `url(${import.meta.env.BASE_URL}cta-bg.jpg)` }}
+    >
       <div className="container">
         <div className="cta-header animate-on-scroll">
           <h2>A hora de investir no sucesso da sua empresa é agora</h2>
@@ -31,7 +35,7 @@ export const CTA = () => {
           <div className="cta-chat-card glass-panel">
             <div className="cta-avatar">
               <img
-                src="/diana.png"
+                src={`${import.meta.env.BASE_URL}diana.png`}
                 alt="Diana Assistente DFCont"
                 className="cta-avatar-img"
                 onError={(e) => {
@@ -62,7 +66,7 @@ export const CTA = () => {
           <div className="cta-video-card glass-panel">
             <video
               className="cta-video"
-              src="/diana-video.mp4"
+              src={`${import.meta.env.BASE_URL}diana-video.mp4`}
               autoPlay
               muted
               loop

@@ -10,7 +10,7 @@
   background-image:
     linear-gradient(180deg, rgba(13, 13, 13, 0.9) 0%, rgba(13, 13, 13, 0.84) 45%, rgba(13, 13, 13, 0.94) 100%),
     radial-gradient(circle at 85% 15%, rgba(201, 168, 76, 0.10), transparent 45%),
-       url('/bg-plans.jpg');
+       var(--plans-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -241,7 +241,7 @@
     background-image:
       linear-gradient(180deg, rgba(13, 13, 13, 0.95) 0%, rgba(13, 13, 13, 0.9) 50%, rgba(13, 13, 13, 0.96) 100%),
       radial-gradient(circle at 85% 15%, rgba(201, 168, 76, 0.08), transparent 45%),
-       url('/bg-plans.jpg');
+       var(--plans-bg-image);
     background-position: 30% center;
   }
 

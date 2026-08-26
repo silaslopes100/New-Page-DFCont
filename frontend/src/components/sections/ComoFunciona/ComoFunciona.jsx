@@ -26,7 +26,11 @@ const steps = [
 
 export const ComoFunciona = () => {
   return (
-    <section className="como-funciona section section-white" id="como-funciona">
+    <section
+      className="como-funciona section section-white"
+      id="como-funciona"
+      style={{ '--como-funciona-bg-image': `url(${import.meta.env.BASE_URL}como-funciona.jpg)` }}
+    >
       <div className="container">
         <div className="section-header animate-on-scroll">
           <h2>Como Funciona</h2>
