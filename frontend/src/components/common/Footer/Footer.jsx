@@ -31,7 +31,7 @@ export const Footer = () => {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand glass-panel">
-            <img src="/frontend/logo.png" alt="DFCont" className="footer-logo" />
+            <img src="/logo.png" alt="DFCont" className="footer-logo" />
             <p className="footer-manifesto">
               Excelência em assessoria contábil. Soluções personalizadas para sua empresa crescer com segurança e tranquilidade.
             </p>

@@ -10,7 +10,7 @@
   background-image:
     linear-gradient(180deg, rgba(13, 13, 13, 0.88) 0%, rgba(13, 13, 13, 0.82) 40%, rgba(13, 13, 13, 0.92) 100%),
     radial-gradient(circle at 15% 20%, rgba(201, 168, 76, 0.10), transparent 45%),
-       url('/frontend/bg-calculator.jpg');
+       url('/bg-calculator.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -258,7 +258,7 @@
     background-image:
       linear-gradient(180deg, rgba(13, 13, 13, 0.94) 0%, rgba(13, 13, 13, 0.9) 50%, rgba(13, 13, 13, 0.96) 100%),
       radial-gradient(circle at 15% 20%, rgba(201, 168, 76, 0.08), transparent 45%),
-       url('/frontend/bg-calculator.jpg');
+       url('/bg-calculator.jpg');
     background-position: 70% center;
   }
 
