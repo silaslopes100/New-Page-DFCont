@@ -92,9 +92,11 @@
 }
 
 .value-icon {
-  font-size: 40px;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
   display: block;
-  margin-bottom: var(--spacing-3);
+  margin: 0 auto var(--spacing-3);
 }
 
 .value-card h3 {

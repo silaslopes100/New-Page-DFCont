@@ -35,7 +35,7 @@
   inset: 0;
   overflow: hidden;
   z-index: 0;
-  border-radius: 0;
+  border-radius: 12px;
 }
 
 .navbar-logo {
@@ -110,7 +110,6 @@
   transition: transform 0.2s ease;
 }
 
-.navbar-dropdown:hover .dropdown-arrow,
 .dropdown-trigger[aria-expanded='true'] .dropdown-arrow {
   transform: rotate(180deg);
 }

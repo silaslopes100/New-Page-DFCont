@@ -14,9 +14,9 @@ const mockedLead = vi.mocked(leadAPI.create);
 const successCalc = {
   data: {
     recommended_plan: 'Padrão',
-    monthly_price: 195,
-    price: 195,
-    benefits: ['Certificado digital', 'Conta PJ gratuita'],
+    monthly_price: 253,
+    price: 253,
+    benefits: ['Contabilidade completa', 'Conta PJ gratuita'],
     description: 'Plano mais popular',
   },
 };
@@ -87,7 +87,7 @@ describe('Calculator flow', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Calcular meu plano' }));
 
     await waitFor(() => expect(screen.getByText('Padrão')).toBeInTheDocument());
-    expect(screen.getByText('R$ 195,00')).toBeInTheDocument();
+    expect(screen.getByText('R$ 253,00')).toBeInTheDocument();
     expect(screen.getByText('Certificado digital')).toBeInTheDocument();
     expect(mockedLead).toHaveBeenCalledTimes(1);
     const leadPayload = mockedLead.mock.calls[0][0];

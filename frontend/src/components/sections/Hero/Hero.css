@@ -149,53 +149,6 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-.hero-scroll-indicator {
-  position: fixed;
-  right: var(--spacing-5);
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-3);
-}
-
-.scroll-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.4);
-  writing-mode: vertical-lr;
-}
-
-.scroll-line {
-  width: 1px;
-  flex: 1;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.15);
-  position: relative;
-}
-
-.scroll-dot {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: var(--radius-circle);
-  background: var(--color-primary);
-  transition: top 0.1s linear;
-}
-
-.scroll-counter {
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.1em;
-  font-feature-settings: 'tnum';
-}
-
 @media (max-width: 768px) {
   .hero-container {
     height: 100dvh;
@@ -215,10 +168,6 @@
 
   .hero-stat-num {
     font-size: 22px;
-  }
-
-  .hero-scroll-indicator {
-    display: none;
   }
 
   .hero-cta {

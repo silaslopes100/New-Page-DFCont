@@ -2,10 +2,10 @@ from typing import List
 from app.api.models.calculator import CalculatorRequest, CalculatorResponse
 
 PLANS_SERVICO = {
-    "basico": {"name": "Básico", "price": 139, "monthly": 139},
-    "padrao": {"name": "Padrão", "price": 195, "monthly": 195},
-    "multibeneficios": {"name": "Multibenefícios", "price": 225, "monthly": 225},
-    "essencial": {"name": "Experts Essencial", "price": 395, "monthly": 395},
+    "basico": {"name": "Básico", "price": 197, "monthly": 197},
+    "padrao": {"name": "Padrão", "price": 253, "monthly": 253},
+    "multibeneficios": {"name": "Multibenefícios", "price": 297, "monthly": 297},
+    "essencial": {"name": "Experts Essencial", "price": 453, "monthly": 453},
 }
 
 PLANS_COMERCIO = {
@@ -14,8 +14,8 @@ PLANS_COMERCIO = {
 }
 
 BENEFITS_MAP = {
-    "basico": ["Certificado digital", "Plataforma de notas fiscais", "Atendimento via chat e e-mail"],
-    "padrao": ["Certificado digital", "Plataforma de notas fiscais", "Atendimento via WhatsApp", "Conta PJ gratuita"],
+    "basico": ["Plataforma de notas fiscais", "Atendimento via chat e e-mail"],
+    "padrao": ["Contabilidade completa", "Plataforma de notas fiscais", "Atendimento via WhatsApp", "Conta PJ gratuita"],
     "multibeneficios": [
         "Certificado digital", "Plataforma de notas fiscais", "Atendimento via WhatsApp",
         "Conta PJ gratuita", "2 benefícios grátis (academia, psicologia, nutrição, seguro, odontológico)",
@@ -36,7 +36,7 @@ BENEFITS_MAP = {
 }
 
 DESCRIPTIONS = {
-    "basico": "Plano essencial para quem está começando, com contabilidade completa e certificado digital.",
+    "basico": "Plano essencial para quem está começando.",
     "padrao": "Plano mais popular, com atendimento via WhatsApp e conta PJ gratuita.",
     "multibeneficios": "Melhor custo-benefício com benefícios exclusivos para você e sua equipe.",
     "essencial": "Atendimento personalizado com assessor dedicado e suporte completo.",

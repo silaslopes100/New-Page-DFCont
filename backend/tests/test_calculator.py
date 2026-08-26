@@ -17,7 +17,7 @@ def test_calculate_basic_plan(client):
     assert response.status_code == 200
     body = response.json()
     assert body["recommended_plan"] == "Básico"
-    assert body["price"] == 139
+    assert body["price"] == 197
 
 
 def test_calculate_comercio_plan(client):
