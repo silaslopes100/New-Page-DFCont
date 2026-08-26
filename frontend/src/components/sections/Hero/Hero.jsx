@@ -20,10 +20,8 @@ export const Hero = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const ctaRef = useRef(null);
-  const scrollIndicatorRef = useRef(null);
   const statsRef = useRef(null);
 
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const totalSections = 3;
@@ -225,14 +223,13 @@ export const Hero = () => {
   useEffect(() => {
     if (!isReady) return;
 
-    gsap.set([titleRef.current, subtitleRef.current, ctaRef.current, scrollIndicatorRef.current, statsRef.current], { visibility: 'visible' });
+    gsap.set([titleRef.current, subtitleRef.current, ctaRef.current, statsRef.current], { visibility: 'visible' });
 
     const tl = gsap.timeline();
     tl.from(titleRef.current, { y: 100, opacity: 0, duration: 1.2, ease: 'power4.out' })
       .from(subtitleRef.current, { y: 60, opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.6')
       .from(ctaRef.current, { y: 40, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.4')
-      .from(statsRef.current, { y: 30, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.3')
-      .from(scrollIndicatorRef.current, { opacity: 0, y: 30, duration: 0.8, ease: 'power2.out' }, '-=0.2');
+      .from(statsRef.current, { y: 30, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.3');
 
     return () => tl.kill();
   }, [isReady]);
@@ -243,7 +240,6 @@ export const Hero = () => {
       const wh = window.innerHeight;
       const maxScroll = Math.max(document.documentElement.scrollHeight - wh, 1);
       const progress = Math.min(scrollY / maxScroll, 1);
-      setScrollProgress(progress);
       const newSection = Math.min(Math.floor(progress * totalSections), totalSections - 1);
       setCurrentSection(newSection);
 
@@ -283,7 +279,7 @@ export const Hero = () => {
     {
       title: 'Sua Empresa',
       highlight: 'Decola com a Gente',
-      subtitle: 'Da abertura ao crescimento, estamos ao seu lado em cada etapa. Mais de 500 empresas confiam na DFCont.',
+      subtitle: 'Da abertura ao crescimento, estamos ao seu lado em cada etapa. Diversas empresas confiam na DFCont.',
     },
   ];
 
@@ -292,7 +288,7 @@ export const Hero = () => {
       <video
         ref={videoRef}
         className="hero-video-bg"
-        src="/hero-bg.mp4"
+        src="/frontend/hero-bg.mp4"
         autoPlay
         muted
         loop
@@ -328,7 +324,7 @@ export const Hero = () => {
 
           <div ref={statsRef} className="hero-stats" style={{ visibility: 'hidden' }}>
             <div className="hero-stat-item">
-              <span className="hero-stat-num">+500</span>
+              <span className="hero-stat-num">+</span>
               <span className="hero-stat-lbl">Empresas ativas</span>
             </div>
             <div className="hero-stat-divider" />
@@ -343,16 +339,6 @@ export const Hero = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div ref={scrollIndicatorRef} className="hero-scroll-indicator" style={{ visibility: 'hidden' }}>
-        <span className="scroll-label">SCROLL</span>
-        <div className="scroll-line">
-          <div className="scroll-dot" style={{ top: `${scrollProgress * 100}%` }} />
-        </div>
-        <span className="scroll-counter">
-          {String(currentSection + 1).padStart(2, '0')} / {String(totalSections).padStart(2, '0')}
-        </span>
       </div>
     </div>
   );

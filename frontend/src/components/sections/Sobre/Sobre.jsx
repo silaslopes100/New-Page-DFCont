@@ -4,10 +4,10 @@ import { NAV_SECTIONS } from '../../../config/site';
 import './Sobre.css';
 
 const values = [
-  { icon: '🤝', title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
-  { icon: '💡', title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
-  { icon: '🎯', title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
-  { icon: '🤲', title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
+  { icon: '/frontend/Confianca.png', title: 'Confiança', text: 'Construímos relações transparentes com nossos clientes.' },
+  { icon: '/frontend/Inovacao.png', title: 'Inovação', text: 'Utilizamos tecnologia para oferecer serviços contábeis modernos.' },
+  { icon: '/frontend/Excelencia.png', title: 'Excelência', text: 'Buscamos o mais alto padrão de qualidade em cada serviço.' },
+  { icon: '/frontend/Compromisso.png', title: 'Compromisso', text: 'Dedicados ao sucesso e crescimento da sua empresa.' },
 ];
 
 export const Sobre = () => {
@@ -24,7 +24,7 @@ export const Sobre = () => {
                 construímos uma sólida reputação baseada em confiança, competência e resultados.
               </p>
               <p>
-                Hoje, atendemos mais de 500 empresas ativas em todo o Brasil, oferecendo soluções
+                Hoje, atendemos diversas empresas ativas em todo o Brasil, oferecendo soluções
                 completas em contabilidade digital, abertura de empresas, assessoria fiscal e
                 trabalhista, e planejamento tributário.
               </p>
@@ -34,7 +34,7 @@ export const Sobre = () => {
             </div>
             <div className="about-stats">
               <div className="stat-card">
-                <span className="stat-number">+500</span>
+                <span className="stat-number">+</span>
                 <span className="stat-label">Empresas ativas</span>
               </div>
               <div className="stat-card">
@@ -63,7 +63,7 @@ export const Sobre = () => {
           <div className="values-grid animate-stagger animate-on-scroll">
             {values.map((v) => (
               <div key={v.title} className="value-card">
-                <span className="value-icon">{v.icon}</span>
+                <img src={v.icon} alt={v.title} className="value-icon" />
                 <h3>{v.title}</h3>
                 <p>{v.text}</p>
               </div>

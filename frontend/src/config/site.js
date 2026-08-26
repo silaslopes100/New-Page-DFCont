@@ -9,7 +9,6 @@ export const NAV_SECTIONS = {
   sobre: 'sobre',
   comoFunciona: 'como-funciona',
   planos: 'planos',
-  blog: 'blog',
   contato: 'contato',
   calculadora: 'calculadora',
   depoimentos: 'depoimentos',
@@ -22,7 +21,6 @@ export const NAV_LINKS = [
   { id: NAV_SECTIONS.comoFunciona, label: 'Como Funciona' },
   { id: NAV_SECTIONS.planos, label: 'Planos' },
   { id: NAV_SECTIONS.depoimentos, label: 'Depoimentos' },
-  { id: NAV_SECTIONS.blog, label: 'Blog' },
   { id: NAV_SECTIONS.contato, label: 'Contato' },
 ];
 
