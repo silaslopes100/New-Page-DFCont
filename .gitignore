@@ -2,3 +2,7 @@
 !vercel.json
 .vercel
 .env*
+backend/app/services/__pycache__/calculator_service.cpython-311.pyc
+backend/app/__pycache__/main.cpython-311.pyc
+backend/app/__pycache__/main.cpython-311.pyc
+backend/app/api/routes/__pycache__/plans.cpython-311.pyc
