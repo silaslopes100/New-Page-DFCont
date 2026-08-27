@@ -146,7 +146,7 @@ export const Hero = () => {
       const material = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 }, color1: { value: new THREE.Color(DF_GOLD) },
-          color2: { value: new THREE.Color('#1a0a2e') }, opacity: { value: 0.2 },
+          color2: { value: new THREE.Color('#1a0a2e') }, opacity: { value: isMobile ? 0.35 : 0.2 },
         },
         vertexShader: `
           varying vec2 vUv; varying float vElevation; uniform float time;
