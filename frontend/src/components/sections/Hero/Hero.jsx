@@ -139,7 +139,9 @@ export const Hero = () => {
 
     const createNebula = () => {
       const refs = threeRefs.current;
-      const geometry = new THREE.PlaneGeometry(8000, 4000, 100, 100);
+      const isMobile = window.innerWidth <= 768;
+      const segments = isMobile ? 32 : 100;
+      const geometry = new THREE.PlaneGeometry(8000, 4000, segments, segments);
       const material = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 }, color1: { value: new THREE.Color(DF_GOLD) },
@@ -169,7 +171,7 @@ export const Hero = () => {
         side: THREE.DoubleSide, depthWrite: false,
       });
       const nebula = new THREE.Mesh(geometry, material);
-      nebula.position.set(0, 0, -1050);
+      nebula.position.set(0, 0, isMobile ? -700 : -1050);
       refs.scene.add(nebula);
       refs.nebula = nebula;
     };
