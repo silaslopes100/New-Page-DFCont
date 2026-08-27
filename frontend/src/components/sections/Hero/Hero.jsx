@@ -76,6 +76,7 @@ export const Hero = () => {
 
     const createStarField = () => {
       const refs = threeRefs.current;
+      if (window.innerWidth <= 768) return;
       for (let layer = 0; layer < 3; layer++) {
         const count = 4000;
         const geometry = new THREE.BufferGeometry();
