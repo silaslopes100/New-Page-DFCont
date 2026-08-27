@@ -4,30 +4,30 @@ import './Testimonials.css';
 const testimonials = [
   {
     id: 1,
-    name: 'Carlos Oliveira',
-    role: 'CEO - Tech Solutions',
-    text: 'A DFCont transformou a gestão financeira da minha empresa. O atendimento é excepcional e os profissionais são extremamente competentes.',
+    name: 'Boaser Buga',
+    role: 'Cliente',
+    text: 'Quero agradecer á toda equipe da DFCont por ter me atendido mto bem....desde minha chegada algumas vezes no local, sem marcar HR. até minha saída. Sempre com gentileza e sorriso no rosto...oferecendo uma água...um café. Ao João Paulo ,Contador....obrigado pela disposição e esclarecimentos das dúvidas quando perguntado. Excelente profissional. Grato a todos....',
     rating: 5,
   },
   {
     id: 2,
-    name: 'Ana Silva',
-    role: 'Médica - Clínica Saúde',
-    text: 'Desde que migrei para a DFCont, minha rotina contábil ficou muito mais simples. Recomendo para todos os profissionais da saúde.',
+    name: 'Manuel J S Filho Joaquim',
+    role: 'Cliente',
+    text: 'Boa tarde, a minha experiência foi muito boa, apesar de pedir orientações pela primeira vez, foi muito boa mesmo !! Nota 10.',
     rating: 5,
   },
   {
     id: 3,
-    name: 'Roberto Lima',
-    role: 'Arquiteto - Lima Projetos',
-    text: 'Contratei o plano Multibenefícios e valeu muito a pena. Economizo com benefícios e ainda tenho assessoria contábil de primeira.',
+    name: 'Leonaldo Arruda',
+    role: 'Cliente',
+    text: 'Ótimo profissional com atendimento 5 estrelas, todo tipo de serviços contábeis e com qualidade. Só agradecer',
     rating: 5,
   },
   {
     id: 4,
-    name: 'Patricia Mendes',
-    role: 'Advogada - Mendes & Associados',
-    text: 'Profissionalismo e eficiência definem a DFCont. Resolvem tudo rapidamente e estão sempre disponíveis quando preciso.',
+    name: 'Elisabete Castro',
+    role: 'Cliente',
+    text: 'Precisei fazer minha declaração de Imposto de Renda referente ao ano de 2024 e, sem contador no momento, fui atendida pela DF Contabilidade. Desde o início, o atendimento foi ágil e transparente. O João foi extremamente solícito, tirando todas as minhas dúvidas com paciência e clareza. É comum ficarmos inseguros quando não conhecemos o serviço ou o profissional, mas minha experiência foi muito positiva. A DF Contabilidade demonstrou comprometimento e profissionalismo, sem enrolação. Recomendo o escritório a quem busca um serviço contábil sério, eficiente.',
     rating: 5,
   },
 ];
@@ -61,7 +61,7 @@ export const Testimonials = () => {
                 </svg>
               ))}
             </div>
-            <span className="rating-score">4.9</span>
+            <span className="rating-score">5.0</span>
             <span className="rating-source">Avaliação Google</span>
           </div>
           <div className="rating-card">

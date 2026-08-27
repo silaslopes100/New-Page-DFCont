@@ -146,13 +146,13 @@ export const Hero = () => {
       const material = new THREE.ShaderMaterial({
         uniforms: {
           time: { value: 0 }, color1: { value: new THREE.Color(DF_GOLD) },
-          color2: { value: new THREE.Color('#1a0a2e') }, opacity: { value: isMobile ? 0.35 : 0.2 },
+          color2: { value: new THREE.Color('#030007') }, opacity: { value: isMobile ? 0.1 : 0.2 },
         },
         vertexShader: `
           varying vec2 vUv; varying float vElevation; uniform float time;
           void main() {
             vUv = uv; vec3 pos = position;
-            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * 20.0;
+            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * (isMobile ? 10.0 : 20.0);
             pos.z += elevation; vElevation = elevation;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
           }
