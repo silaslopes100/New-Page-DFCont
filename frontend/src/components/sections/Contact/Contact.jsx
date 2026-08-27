@@ -110,7 +110,7 @@ export const Contact = () => {
                 </svg>
                 <div>
                   <strong>Endereço</strong>
-                  <p>Av. Paulista, 1000 - São Paulo, SP</p>
+                  <p>R. Parapuã, 574 - Itaberaba, São Paulo</p>
                 </div>
               </div>
             </div>
