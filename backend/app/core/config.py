@@ -34,12 +34,12 @@ class Settings:
     # EMAIL_MODE=smtp sends via SMTP using the credentials below.
     EMAIL_MODE: str = os.getenv("EMAIL_MODE", "console").lower()
     SMTP_HOST: str = os.getenv("SMTP_HOST", "")
-    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
-    SMTP_USER: str = os.getenv("SMTP_USER", "")
-    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
-    SMTP_FROM: str = os.getenv("SMTP_FROM", "")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT"))
+    SMTP_USER: str = os.getenv("SMTP_USER")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD")
+    SMTP_FROM: str = os.getenv("SMTP_FROM")
     LEAD_NOTIFICATION_EMAIL: str = os.getenv(
-        "LEAD_NOTIFICATION_EMAIL", "silaslopesdesouza@gmail.com"
+        "LEAD_NOTIFICATION_EMAIL"
     )
 
 

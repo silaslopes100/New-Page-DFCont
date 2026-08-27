@@ -40,8 +40,8 @@ def _send_via_smtp(message: EmailMessage) -> None:
         _log_console(message)
         return
 
-    with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
-        server.starttls()
+    # Port 465 is implicit TLS (SMTPS); STARTTLS on this port hangs until timeout.
+    with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
         server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
         server.send_message(message)
 
