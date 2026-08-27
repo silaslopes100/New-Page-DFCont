@@ -56,23 +56,55 @@ export const Hero = () => {
       refs.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
       refs.camera.position.set(0, 30, 300);
 
-      refs.renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: true, alpha: true });
+      const isMobileDevice = window.innerWidth <= 768;
+
+      refs.renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: !isMobileDevice, alpha: true, powerPreference: 'low-power' });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileDevice ? 1.5 : 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       refs.renderer.toneMappingExposure = 0.5;
       refs.renderer.setClearColor(0x000000, 0);
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
-      const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.2, 0.85);
-      refs.composer.addPass(bloomPass);
+      // Bloom pass is expensive and prone to causing dropped/lost WebGL contexts on mobile GPUs.
+      if (!isMobileDevice) {
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.2, 0.85);
+        refs.composer.addPass(bloomPass);
+      }
 
       createStarField();
       createNebula();
       animate();
       setIsReady(true);
     };
+
+    // Mobile GPUs frequently drop the WebGL context under memory pressure while scrolling.
+    // Without handling these events the canvas is left permanently black.
+    const handleContextLost = (event) => {
+      event.preventDefault();
+      const refs = threeRefs.current;
+      if (refs.animationId) cancelAnimationFrame(refs.animationId);
+      refs.animationId = null;
+    };
+
+    const handleContextRestored = () => {
+      const refs = threeRefs.current;
+      refs.stars.forEach((s) => { refs.scene.remove(s); s.geometry.dispose(); s.material.dispose(); });
+      refs.stars = [];
+      if (refs.nebula) {
+        refs.scene.remove(refs.nebula);
+        refs.nebula.geometry.dispose();
+        refs.nebula.material.dispose();
+        refs.nebula = null;
+      }
+      createStarField();
+      createNebula();
+      if (!refs.animationId) animate();
+    };
+
+    canvasRef.current?.addEventListener('webglcontextlost', handleContextLost, false);
+    canvasRef.current?.addEventListener('webglcontextrestored', handleContextRestored, false);
 
     const createStarField = () => {
       const refs = threeRefs.current;
@@ -147,12 +179,13 @@ export const Hero = () => {
         uniforms: {
           time: { value: 0 }, color1: { value: new THREE.Color(DF_GOLD) },
           color2: { value: new THREE.Color('#030007') }, opacity: { value: isMobile ? 0.1 : 0.2 },
+          elevationScale: { value: isMobile ? 10.0 : 20.0 },
         },
         vertexShader: `
-          varying vec2 vUv; varying float vElevation; uniform float time;
+          varying vec2 vUv; varying float vElevation; uniform float time; uniform float elevationScale;
           void main() {
             vUv = uv; vec3 pos = position;
-            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * (isMobile ? 10.0 : 20.0);
+            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * elevationScale;
             pos.z += elevation; vElevation = elevation;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
           }
@@ -217,6 +250,8 @@ export const Hero = () => {
       const refs = threeRefs.current;
       if (refs.animationId) cancelAnimationFrame(refs.animationId);
       window.removeEventListener('resize', handleResize);
+      canvasRef.current?.removeEventListener('webglcontextlost', handleContextLost, false);
+      canvasRef.current?.removeEventListener('webglcontextrestored', handleContextRestored, false);
       refs.stars.forEach((s) => { s.geometry.dispose(); s.material.dispose(); });
       if (refs.nebula) { refs.nebula.geometry.dispose(); refs.nebula.material.dispose(); }
       if (refs.renderer) refs.renderer.dispose();
@@ -327,17 +362,12 @@ export const Hero = () => {
 
           <div ref={statsRef} className="hero-stats" style={{ visibility: 'hidden' }}>
             <div className="hero-stat-item">
-              <span className="hero-stat-num">+</span>
-              <span className="hero-stat-lbl">Empresas ativas</span>
-            </div>
-            <div className="hero-stat-divider" />
-            <div className="hero-stat-item">
               <span className="hero-stat-num">+10</span>
               <span className="hero-stat-lbl">Anos de mercado</span>
             </div>
             <div className="hero-stat-divider" />
             <div className="hero-stat-item">
-              <span className="hero-stat-num">98%</span>
+              <span className="hero-stat-num">82%</span>
               <span className="hero-stat-lbl">Satisfação</span>
             </div>
           </div>
