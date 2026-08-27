@@ -33,6 +33,7 @@ export const Hero = () => {
   });
 
   const smoothCameraPos = useRef({ x: 0, y: 30, z: 300 });
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -46,9 +47,25 @@ export const Hero = () => {
     }
   }, []);
 
+  // Mobile GPUs can lose the WebGL context (going solid black) if a heavy
+  // canvas keeps rendering while scrolled off-screen; pausing it here avoids that.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const initThree = () => {
       const refs = threeRefs.current;
+      const isMobile = window.innerWidth < 768;
 
       refs.scene = new THREE.Scene();
       refs.scene.background = null;
@@ -56,17 +73,19 @@ export const Hero = () => {
       refs.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
       refs.camera.position.set(0, 30, 300);
 
-      refs.renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: true, alpha: true });
+      refs.renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: !isMobile, alpha: true, powerPreference: 'low-power' });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       refs.renderer.toneMappingExposure = 0.5;
       refs.renderer.setClearColor(0x000000, 0);
 
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
-      const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.2, 0.85);
-      refs.composer.addPass(bloomPass);
+      if (!isMobile) {
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.2, 0.85);
+        refs.composer.addPass(bloomPass);
+      }
 
       createStarField();
       createNebula();
@@ -76,8 +95,10 @@ export const Hero = () => {
 
     const createStarField = () => {
       const refs = threeRefs.current;
-      for (let layer = 0; layer < 3; layer++) {
-        const count = 4000;
+      const isMobile = window.innerWidth < 768;
+      const layerCount = isMobile ? 1 : 3;
+      for (let layer = 0; layer < layerCount; layer++) {
+        const count = isMobile ? 1500 : 4000;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(count * 3);
         const colors = new Float32Array(count * 3);
@@ -177,6 +198,7 @@ export const Hero = () => {
     const animate = () => {
       const refs = threeRefs.current;
       refs.animationId = requestAnimationFrame(animate);
+      if (!isVisibleRef.current) return;
       const time = Date.now() * 0.001;
 
       refs.stars.forEach((sf) => { if (sf.material.uniforms) sf.material.uniforms.time.value = time; });
@@ -210,10 +232,30 @@ export const Hero = () => {
     };
     window.addEventListener('resize', handleResize);
 
+    const canvas = canvasRef.current;
+    const handleContextLost = (e) => {
+      e.preventDefault();
+      const refs = threeRefs.current;
+      if (refs.animationId) cancelAnimationFrame(refs.animationId);
+      refs.animationId = null;
+    };
+    const handleContextRestored = () => {
+      const refs = threeRefs.current;
+      refs.stars.forEach((s) => { s.geometry.dispose(); s.material.dispose(); });
+      if (refs.nebula) { refs.nebula.geometry.dispose(); refs.nebula.material.dispose(); }
+      refs.stars = [];
+      refs.nebula = null;
+      initThree();
+    };
+    canvas?.addEventListener('webglcontextlost', handleContextLost, false);
+    canvas?.addEventListener('webglcontextrestored', handleContextRestored, false);
+
     return () => {
       const refs = threeRefs.current;
       if (refs.animationId) cancelAnimationFrame(refs.animationId);
       window.removeEventListener('resize', handleResize);
+      canvas?.removeEventListener('webglcontextlost', handleContextLost);
+      canvas?.removeEventListener('webglcontextrestored', handleContextRestored);
       refs.stars.forEach((s) => { s.geometry.dispose(); s.material.dispose(); });
       if (refs.nebula) { refs.nebula.geometry.dispose(); refs.nebula.material.dispose(); }
       if (refs.renderer) refs.renderer.dispose();
