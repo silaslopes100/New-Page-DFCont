@@ -74,6 +74,33 @@ export const Hero = () => {
       setIsReady(true);
     };
 
+    // Mobile GPUs frequently drop the WebGL context under memory pressure while scrolling.
+    // Without handling these events the canvas is left permanently black.
+    const handleContextLost = (event) => {
+      event.preventDefault();
+      const refs = threeRefs.current;
+      if (refs.animationId) cancelAnimationFrame(refs.animationId);
+      refs.animationId = null;
+    };
+
+    const handleContextRestored = () => {
+      const refs = threeRefs.current;
+      refs.stars.forEach((s) => { refs.scene.remove(s); s.geometry.dispose(); s.material.dispose(); });
+      refs.stars = [];
+      if (refs.nebula) {
+        refs.scene.remove(refs.nebula);
+        refs.nebula.geometry.dispose();
+        refs.nebula.material.dispose();
+        refs.nebula = null;
+      }
+      createStarField();
+      createNebula();
+      if (!refs.animationId) animate();
+    };
+
+    canvasRef.current?.addEventListener('webglcontextlost', handleContextLost, false);
+    canvasRef.current?.addEventListener('webglcontextrestored', handleContextRestored, false);
+
     const createStarField = () => {
       const refs = threeRefs.current;
       if (window.innerWidth <= 768) return;
@@ -217,6 +244,8 @@ export const Hero = () => {
       const refs = threeRefs.current;
       if (refs.animationId) cancelAnimationFrame(refs.animationId);
       window.removeEventListener('resize', handleResize);
+      canvasRef.current?.removeEventListener('webglcontextlost', handleContextLost, false);
+      canvasRef.current?.removeEventListener('webglcontextrestored', handleContextRestored, false);
       refs.stars.forEach((s) => { s.geometry.dispose(); s.material.dispose(); });
       if (refs.nebula) { refs.nebula.geometry.dispose(); refs.nebula.material.dispose(); }
       if (refs.renderer) refs.renderer.dispose();
