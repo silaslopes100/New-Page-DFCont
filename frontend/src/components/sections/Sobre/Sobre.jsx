@@ -34,7 +34,7 @@ export const Sobre = () => {
             </div>
             <div className="about-stats">
               <div className="stat-card">
-                <span className="stat-number">+</span>
+                <span className="stat-number">Diversas</span>
                 <span className="stat-label">Empresas ativas</span>
               </div>
               <div className="stat-card">

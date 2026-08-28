@@ -152,7 +152,7 @@ export const Hero = () => {
           varying vec2 vUv; varying float vElevation; uniform float time;
           void main() {
             vUv = uv; vec3 pos = position;
-            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * (isMobile ? 10.0 : 20.0);
+            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * ${isMobile ? '10.0' : '20.0'};
             pos.z += elevation; vElevation = elevation;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
           }
