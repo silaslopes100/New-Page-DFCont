@@ -286,8 +286,8 @@ export const Hero = () => {
       const scrollY = window.scrollY;
       const wh = window.innerHeight;
       const maxScroll = Math.max(document.documentElement.scrollHeight - wh, 1);
-      const progress = Math.min(scrollY / maxScroll, 1);
-      const newSection = Math.min(Math.floor(progress * totalSections), totalSections - 1);
+      const progress = Math.max(0, Math.min(scrollY / maxScroll, 1));
+      const newSection = Math.max(0, Math.min(Math.floor(progress * totalSections), totalSections - 1));
       setCurrentSection(newSection);
 
       const refs = threeRefs.current;
