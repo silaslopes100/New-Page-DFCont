@@ -56,22 +56,33 @@ export const Hero = () => {
       refs.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
       refs.camera.position.set(0, 30, 300);
 
+      createRenderer();
+      createComposer();
+
+      createStarField();
+      createNebula();
+      animate();
+      setIsReady(true);
+    };
+
+    const createRenderer = () => {
+      const refs = threeRefs.current;
+      if (refs.renderer) refs.renderer.dispose();
       refs.renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: true, alpha: true });
       refs.renderer.setSize(window.innerWidth, window.innerHeight);
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       refs.renderer.toneMappingExposure = 0.5;
       refs.renderer.setClearColor(0x000000, 0);
+    };
 
+    const createComposer = () => {
+      const refs = threeRefs.current;
+      if (refs.composer) refs.composer.dispose();
       refs.composer = new EffectComposer(refs.renderer);
       refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
       const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.2, 0.85);
       refs.composer.addPass(bloomPass);
-
-      createStarField();
-      createNebula();
-      animate();
-      setIsReady(true);
     };
 
     // Mobile GPUs frequently drop the WebGL context under memory pressure while scrolling.
@@ -93,6 +104,10 @@ export const Hero = () => {
         refs.nebula.material.dispose();
         refs.nebula = null;
       }
+      // The render targets/shader programs of the EffectComposer are also lost
+      // with the context, so the whole render pipeline must be rebuilt.
+      createRenderer();
+      createComposer();
       createStarField();
       createNebula();
       if (!refs.animationId) animate();
