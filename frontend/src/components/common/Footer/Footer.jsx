@@ -84,7 +84,7 @@ export const Footer = () => {
             </ul>
             <div className="footer-contact-info">
               <p>contato@dfcont.com.br</p>
-              <p>(11) 94527-7005</p>
+              <p>(11) 91342-5960</p>
             </div>
           </div>
         </div>

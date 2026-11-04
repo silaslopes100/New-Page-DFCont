@@ -109,7 +109,7 @@
 
 .cta-avatar-name {
   color: var(--color-white);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   font-size: 14px;
 }
 

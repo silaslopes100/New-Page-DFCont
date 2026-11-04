@@ -24,8 +24,8 @@ class PlanResponse(BaseModel):
     id: str
     name: str
     category: str
-    price: float
-    monthly_price: float
+    price: Optional[float] = None
+    monthly_price: Optional[float] = None
     description: Optional[str] = None
     badge: Optional[str] = None
     features: List[str] = []

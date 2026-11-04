@@ -8,7 +8,7 @@
 .input-label {
   font-family: var(--font-body);
   font-size: var(--font-size-small);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
 }
 
@@ -87,7 +87,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-bg);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   transition: all var(--animation-hover-duration) ease;
   display: flex;
@@ -130,7 +130,7 @@
   background: var(--color-white);
   font-family: var(--font-body);
   font-size: var(--font-size-small);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all var(--animation-hover-duration) ease;
   color: var(--color-text-secondary);
@@ -147,7 +147,7 @@
 .toggle-active {
   background: var(--color-primary);
   color: var(--color-white);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
 }
 
 .toggle-active:hover {

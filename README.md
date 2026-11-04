@@ -13,7 +13,7 @@ Revisão e correção da one page da DFCont (React 19 + Vite em `frontend/`, Fas
 ## 2. Itens entregues
 
 ### 2.1 Configuração central (novo)
-- **`frontend/src/config/site.js`** — número oficial de WhatsApp (`5511945277005`), `buildWhatsAppUrl()` com texto pré-preenchido, `NAV_SECTIONS`, `NAV_LINKS`, `SERVICES_LINKS` e `scrollToSection()`. Todas as âncoras e CTAs do site passam a usar estas constantes (Hero, CTA, Footer, Plans, Sobre, Testimonials, Calculator).
+- **`frontend/src/config/site.js`** — número oficial de WhatsApp (`5511913425960`), `buildWhatsAppUrl()` com texto pré-preenchido, `NAV_SECTIONS`, `NAV_LINKS`, `SERVICES_LINKS` e `scrollToSection()`. Todas as âncoras e CTAs do site passam a usar estas constantes (Hero, CTA, Footer, Plans, Sobre, Testimonials, Calculator).
 
 ### 2.2 Dropdown "Serviços" cortado — corrigido
 - **Causa raiz:** `.glass-panel { overflow: hidden }` aplicado ao `.navbar-container`.
@@ -39,7 +39,7 @@ Revisão e correção da one page da DFCont (React 19 + Vite em `frontend/`, Fas
 
 ### 2.6 WhatsApp oficial
 - **Causa raiz:** botões apontavam para `#contato` ou número antigo.
-- **Fix:** todos os CTAs (Hero "Fale conosco", CTA "Fale com um especialista", Plans, Calculator, Footer, contato no Contact) usam `https://wa.me/5511945277005?text=...` com `target="_blank" rel="noopener noreferrer"`.
+- **Fix:** todos os CTAs (Hero "Fale conosco", CTA "Fale com um especialista", Plans, Calculator, Footer, contato no Contact) usam `https://wa.me/5511913425960?text=...` com `target="_blank" rel="noopener noreferrer"`.
 
 ### 2.7 Backend — lead + e-mail + contact
 - **`email_service.py` (novo):** e-mail de notificação de lead com corpo contextual completo. Modos `console` (log, padrão dev) e `smtp` (starttls). Best-effort: nunca derruba a persistência.
@@ -81,7 +81,7 @@ python -m venv .venv   # (já criado; Python do sistema tinha pydantic corrompid
 pip install -r requirements.txt
 copy .env.example .env # ajustar EMAIL_MODE e credenciais SMTP
 .venv\Scripts\python -m uvicorn app.main:app --port 8000
-.venv\Scripts\python -m pytest -q
+.venv\Scripts\python -m pytest -q 
 ```
 
 > **Nota:** o servidor atualmente rodando (PID 7728, porta 8000) usa o `.venv` com `EMAIL_MODE=console` — e-mails aparecem no log do servidor.

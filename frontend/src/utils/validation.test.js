@@ -50,11 +50,11 @@ describe('formatPhoneMask', () => {
     expect(formatPhoneMask('11')).toBe('(11');
     expect(formatPhoneMask('1194527')).toBe('(11) 9452-7');
     expect(formatPhoneMask('1194527700')).toBe('(11) 9452-7700');
-    expect(formatPhoneMask('11945277005')).toBe('(11) 94527-7005');
+    expect(formatPhoneMask('11913425960')).toBe('(11) 91342-5960');
   });
 
   it('limita a 11 dígitos e ignora não numéricos', () => {
-    expect(formatPhoneMask('119452770051234')).toBe('(11) 94527-7005');
+    expect(formatPhoneMask('119134259601234')).toBe('(11) 91342-5960');
     expect(formatPhoneMask('(11) 99999-9999')).toBe('(11) 99999-9999');
   });
 });

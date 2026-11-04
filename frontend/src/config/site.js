@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = '5511945277005';
+export const WHATSAPP_NUMBER = '5511913425960';
 export const WHATSAPP_DEFAULT_MESSAGE = 'Olá, gostaria de falar com um especialista da DFCont.';
 
 export const buildWhatsAppUrl = (message = WHATSAPP_DEFAULT_MESSAGE) =>

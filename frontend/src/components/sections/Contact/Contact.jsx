@@ -89,7 +89,7 @@ export const Contact = () => {
                     rel="noopener noreferrer"
                     className="contact-detail-link"
                   >
-                    (11) 94527-7005
+                    (11) 91342-5960
                   </a>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export const Contact = () => {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateField('phone', formatPhoneMask(e.target.value))}
-                  placeholder="(11) 94527-7005"
+                  placeholder="(11) 91342-5960"
                   error={fieldErrors.phone}
                 />
                 <Select

@@ -70,7 +70,7 @@
   background: none;
   font-family: var(--font-body);
   font-size: var(--font-size-body);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   color: var(--color-white);
   cursor: pointer;
   text-align: left;

@@ -10,12 +10,12 @@ import {
 
 describe('WhatsApp', () => {
   it('usa o número oficial da DFCont', () => {
-    expect(WHATSAPP_NUMBER).toBe('5511945277005');
+    expect(WHATSAPP_NUMBER).toBe('5511913425960');
   });
 
   it('monta a URL oficial com mensagem padrão', () => {
     const url = buildWhatsAppUrl();
-    expect(url.startsWith('https://wa.me/5511945277005?text=')).toBe(true);
+    expect(url.startsWith('https://wa.me/5511913425960?text=')).toBe(true);
     expect(decodeURIComponent(url.split('text=')[1])).toBe(
       'Olá, gostaria de falar com um especialista da DFCont.'
     );
@@ -23,7 +23,7 @@ describe('WhatsApp', () => {
 
   it('monta a URL com mensagem customizada codificada', () => {
     const url = buildWhatsAppUrl('Quero contratar o plano Padrão');
-    expect(url.startsWith('https://wa.me/5511945277005?text=')).toBe(true);
+    expect(url.startsWith('https://wa.me/5511913425960?text=')).toBe(true);
     expect(decodeURIComponent(url.split('text=')[1])).toBe('Quero contratar o plano Padrão');
   });
 });

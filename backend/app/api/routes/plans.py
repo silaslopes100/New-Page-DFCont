@@ -7,37 +7,36 @@ from app.core.database import get_db
 router = APIRouter(prefix="/api/plans", tags=["plans"])
 
 BASE_PLANS = [
-    {"id": "basico", "name": "Básico", "category": "servico", "price": 197, "monthly_price": 197,
-     "description": "Plano essencial para quem está começando.", "badge": None,
-     "features": ["Abertura grátis",
-                  "Atendimento via chat e e-mail", "Plataforma de notas fiscais"],
+    {"id": "start", "name": "Start", "category": "servico", "price": 197, "monthly_price": 197,
+     "description": "O essencial para começar.", "badge": None,
+     "features": ["Abertura grátis", "Atendimento via chat e e-mail",
+                  "Plataforma de gestão de impostos"],
      "highlight": False},
-    {"id": "padrao", "name": "Padrão", "category": "servico", "price": 253, "monthly_price": 253,
-     "description": "Mais benefícios para seu negócio.", "badge": "Mais Popular",
-     "features": ["Tudo do Básico", "Contabilidade completa", "Atendimento via WhatsApp", "Conta PJ gratuita",
-                  "Relatórios mensais", "Suporte prioritário"],
-     "highlight": False},
-    {"id": "multibeneficios", "name": "Multibenefícios", "category": "servico", "price": 297, "monthly_price": 297,
-     "description": "Melhor custo-benefício.", "badge": "Melhor Custo-Benefício",
-     "features": ["Tudo do Padrão", "Certificado digital", "2 benefícios grátis (academia, psicologia, nutrição, seguro, odontológico)",
-                  "Descontos exclusivos", "Programa de fidelidade"],
+    {"id": "smart", "name": "Smart", "category": "servico", "price": 263, "monthly_price": 263,
+     "description": "Mais recursos para simplificar sua rotina.", "badge": "Melhor custo-benefício",
+     "features": ["Abertura grátis", "Atendimento via chat e e-mail",
+                  "Plataforma de gestão de impostos", "Plataforma de emissão de notas"],
      "highlight": True},
-    {"id": "essencial", "name": "Experts Essencial", "category": "servico", "price": 453, "monthly_price": 453,
-     "description": "Atendimento personalizado.", "badge": None,
-     "features": ["Tudo do Padrão", "Assessor dedicado", "Atendimento via telefone",
-                  "Emissão de notas pela equipe", "Conciliação de extrato"],
+    {"id": "smart_plus", "name": "Smart Plus", "category": "servico", "price": 353, "monthly_price": 353,
+     "description": "Mais praticidade e acompanhamento especializado.", "badge": None,
+     "features": ["Abertura grátis", "Atendimento via chat e e-mail",
+                  "Plataforma de gestão de impostos", "Plataforma de emissão de notas",
+                  "Conta PJ gratuita", "1 reunião mensal com especialista"],
      "highlight": False},
-    {"id": "comercio_basico", "name": "Comércio Básico", "category": "comercio", "price": 245, "monthly_price": 245,
-     "description": "Solução completa para comércio.", "badge": None,
-     "features": ["Contabilidade completa", "Certificado digital", "Abertura grátis",
-                  "Atendimento via chat e e-mail", "Plataforma de notas fiscais", "Escrituração fiscal"],
-     "highlight": False},
-    {"id": "comercio_avancado", "name": "Comércio Avançado", "category": "comercio", "price": 479, "monthly_price": 479,
-     "description": "Gestão fiscal avançada.", "badge": "Recomendado",
-     "features": ["Tudo do Comércio Básico", "Atendimento via WhatsApp e telefone", "Assessor dedicado",
-                  "Conciliação bancária", "Relatórios gerenciais", "Suporte fiscal completo"],
+    {"id": "ouro", "name": "Ouro", "category": "servico", "price": None, "monthly_price": None,
+     "description": "Atendimento completo e acompanhamento dedicado.", "badge": None,
+     "features": ["Abertura grátis", "Atendimento via chat e e-mail",
+                  "Plataforma de gestão de impostos", "Plataforma de emissão de notas",
+                  "Conta PJ gratuita", "1 reunião mensal com especialista",
+                  "Assessor dedicado", "Atendimento via telefone",
+                  "Conciliação de extrato bancário"],
      "highlight": True},
 ]
+
+BASE_PLANS.extend(
+    {**plan, "category": "comercio"}
+    for plan in BASE_PLANS.copy()
+)
 
 
 @router.get("/", response_model=List[PlanResponse])
@@ -45,4 +44,3 @@ async def get_plans(category: Optional[str] = Query(None, description="Filter by
     if category:
         return [p for p in BASE_PLANS if p["category"] == category]
     return BASE_PLANS
-

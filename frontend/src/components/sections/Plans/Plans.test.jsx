@@ -21,31 +21,31 @@ describe('Plans tabs', () => {
     const comercioTab = screen.getByRole('tab', { name: 'Empresas de Comércio' });
     expect(servicoTab).toHaveAttribute('aria-selected', 'true');
     expect(comercioTab).toHaveAttribute('aria-selected', 'false');
-    expect(screen.getAllByText(/Básico|Padrão|Multibenefícios|Experts Essencial/).length).toBeGreaterThan(0);
-    expect(screen.queryByText('Comércio Avançado')).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Start|Smart|Smart Plus|Ouro/).length).toBeGreaterThan(0);
+    expect(screen.getByText('Consulte')).toBeInTheDocument();
   });
 
-  it('alterna para comércio e exibe somente planos de comércio', () => {
+  it('alterna para comércio e exibe os planos da planilha', () => {
     render(<Plans />);
     fireEvent.click(screen.getByRole('tab', { name: 'Empresas de Comércio' }));
 
     const comercioTab = screen.getByRole('tab', { name: 'Empresas de Comércio' });
     expect(comercioTab).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getAllByText('Comércio Básico').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Comércio Avançado').length).toBeGreaterThan(0);
-    expect(screen.queryByText('Multibenefícios')).not.toBeInTheDocument();
-    expect(screen.queryByText('Experts Essencial')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Start').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Smart').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Smart Plus').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Ouro').length).toBeGreaterThan(0);
   });
 
   it('atualiza a tabela comparativa ao trocar de aba', () => {
     render(<Plans />);
     const table = () => screen.getByRole('table');
-    expect(table().textContent).toContain('Básico');
-    expect(table().textContent).not.toContain('Comércio');
+    expect(table().textContent).toContain('Start');
+    expect(table().textContent).toContain('Conciliação de extrato bancário');
 
     fireEvent.click(screen.getByRole('tab', { name: 'Empresas de Comércio' }));
-    expect(table().textContent).toContain('Comércio Básico');
-    expect(table().textContent).not.toContain('Multibenefícios');
+    expect(table().textContent).toContain('Smart Plus');
+    expect(table().textContent).toContain('Ouro');
   });
 
   it('funciona por teclado com setas', () => {
@@ -53,7 +53,7 @@ describe('Plans tabs', () => {
     const servicoTab = screen.getByRole('tab', { name: 'Empresas de Serviço' });
     fireEvent.keyDown(servicoTab, { key: 'ArrowRight' });
     expect(screen.getByRole('tab', { name: 'Empresas de Comércio' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getAllByText('Comércio Avançado').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Smart Plus').length).toBeGreaterThan(0);
   });
 
   it('expõe a seção de planos com o ID esperado', () => {

@@ -9,74 +9,60 @@ const TABS = [
   { id: 'comercio', label: 'Empresas de Comércio' },
 ];
 
+const plans = [
+  {
+    id: 'start',
+    name: 'Start',
+    price: 197,
+    description: 'O essencial para começar',
+    features: ['Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de gestão de impostos'],
+    highlight: false,
+    badge: null,
+  },
+  {
+    id: 'smart',
+    name: 'Smart',
+    price: 263,
+    description: 'Mais recursos para simplificar sua rotina',
+    features: ['Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de gestão de impostos', 'Plataforma de emissão de notas'],
+    highlight: true,
+    badge: 'Melhor custo-benefício',
+  },
+  {
+    id: 'smart_plus',
+    name: 'Smart Plus',
+    price: 353,
+    description: 'Mais praticidade e acompanhamento especializado',
+    features: ['Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de gestão de impostos', 'Plataforma de emissão de notas', 'Conta PJ gratuita', '1 reunião mensal com especialista'],
+    highlight: false,
+    badge: null,
+  },
+  {
+    id: 'ouro',
+    name: 'Ouro',
+    price: null,
+    description: 'Atendimento completo e acompanhamento dedicado',
+    features: ['Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de gestão de impostos', 'Plataforma de emissão de notas', 'Conta PJ gratuita', '1 reunião mensal com especialista', 'Assessor dedicado', 'Atendimento via telefone', 'Conciliação de extrato bancário'],
+    highlight: false,
+    badge: null,
+  },
+];
+
 const plansData = {
-  servico: [
-    {
-      id: 'basico',
-      name: 'Básico',
-      price: 197,
-      description: 'Ideal para quem está começando',
-      features: ['Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de notas fiscais'],
-      highlight: false,
-      badge: null,
-    },
-    {
-      id: 'padrao',
-      name: 'Padrão',
-      price: 253,
-      description: 'Mais benefícios para seu negócio',
-      features: ['Tudo do Básico', 'Contabilidade completa', 'Atendimento via WhatsApp', 'Conta PJ gratuita', 'Relatórios mensais', 'Suporte prioritário'],
-      highlight: false,
-      badge: 'Mais Popular',
-    },
-    {
-      id: 'multibeneficios',
-      name: 'Multibenefícios',
-      price: 297,
-      description: 'Melhor custo-benefício',
-      features: ['Tudo do Padrão', 'Certificado digital', '2 benefícios grátis (academia, psicologia, nutrição, seguro, odontológico)', 'Descontos exclusivos', 'Programa de fidelidade'],
-      highlight: true,
-      badge: 'Melhor Custo-Benefício',
-    },
-    {
-      id: 'essencial',
-      name: 'Experts Essencial',
-      price: 453,
-      description: 'Atendimento personalizado',
-      features: ['Tudo do Padrão', 'Assessor dedicado', 'Atendimento via telefone', 'Emissão de notas pela equipe', 'Conciliação de extrato'],
-      highlight: false,
-      badge: null,
-    },
-  ],
-  comercio: [
-    {
-      id: 'comercio_basico',
-      name: 'Comércio Básico',
-      price: 245,
-      description: 'Solução completa para comércio',
-      features: ['Contabilidade completa', 'Certificado digital', 'Abertura grátis', 'Atendimento via chat e e-mail', 'Plataforma de notas fiscais', 'Escrituração fiscal'],
-      highlight: false,
-      badge: null,
-    },
-    {
-      id: 'comercio_avancado',
-      name: 'Comércio Avançado',
-      price: 479,
-      description: 'Gestão fiscal avançada',
-      features: ['Tudo do Comércio Básico', 'Atendimento via WhatsApp e telefone', 'Assessor dedicado', 'Conciliação bancária', 'Relatórios gerenciais', 'Suporte fiscal completo'],
-      highlight: true,
-      badge: 'Recomendado',
-    },
-  ],
+  servico: plans,
+  comercio: plans,
 };
 
 const comparisonRows = [
-  { label: 'Contabilidade completa', servico: [false, true, true, true], comercio: [true, true] },
-  { label: 'Abertura grátis', servico: [true, true, true, true], comercio: [true, true] },
-  { label: 'Certificado digital', servico: [false, false, true, true], comercio: [true, true] },
-  { label: 'Atendimento via WhatsApp', servico: [false, true, true, true], comercio: [false, true] },
-  { label: 'Assessor dedicado', servico: [false, false, false, true], comercio: [false, true] },
-  { label: 'Benefícios', servico: [false, false, true, false], comercio: [false, false] },
+  { label: 'Abertura grátis', included: [true, true, true, true] },
+  { label: 'Atendimento via chat e e-mail', included: [true, true, true, true] },
+  { label: 'Plataforma de gestão de impostos', included: [true, true, true, true] },
+  { label: 'Plataforma de emissão de notas', included: [false, true, true, true] },
+  { label: 'Conta PJ gratuita', included: [false, false, true, true] },
+  { label: '1 reunião mensal com especialista', included: [false, false, true, true] },
+  { label: 'Assessor dedicado', included: [false, false, false, true] },
+  { label: 'Atendimento via telefone', included: [false, false, false, true] },
+  { label: 'Conciliação de extrato bancário', included: [false, false, false, true] },
 ];
 
 export const Plans = () => {
@@ -152,8 +138,10 @@ export const Plans = () => {
                   {plan.badge && <span className="plan-badge">{plan.badge}</span>}
                   <h3 className="plan-name">{plan.name}</h3>
                   <div className="plan-price">
-                    <span className="plan-price-value">R$ {plan.price}</span>
-                    <span className="plan-price-period">/mês</span>
+                    <span className="plan-price-value">
+                      {plan.price === null ? 'Consulte' : `R$ ${plan.price}`}
+                    </span>
+                    {plan.price !== null && <span className="plan-price-period">/mês</span>}
                   </div>
                   <p className="plan-description">{plan.description}</p>
                 </CardHeader>
@@ -171,7 +159,9 @@ export const Plans = () => {
                 </CardBody>
                 <CardFooter>
                   <a
-                    href={buildWhatsAppUrl(`Olá, gostaria de contratar o plano ${plan.name} (R$ ${plan.price}/mês) da DFCont.`)}
+                    href={buildWhatsAppUrl(
+                      `Olá, gostaria de contratar o plano ${plan.name}${plan.price === null ? '' : ` (R$ ${plan.price}/mês)`} da DFCont.`
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-full-link"
@@ -200,7 +190,7 @@ export const Plans = () => {
                 {comparisonRows.map((row) => (
                   <tr key={row.label}>
                     <td>{row.label}</td>
-                    {(activeTab === 'servico' ? row.servico : row.comercio).map((incl, i) => (
+                    {row.included.map((incl, i) => (
                       <td key={i} className={incl ? 'feature-incl' : 'feature-no-incl'}>
                         {incl ? (
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="#22C55E"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>

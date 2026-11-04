@@ -4,7 +4,7 @@ import './FAQ.css';
 const faqData = [
   {
     question: 'Quanto custa o serviço de contabilidade?',
-    answer: 'Nossos planos começam a partir de R$ 197/mês para empresas de serviço e R$ 245/mês para comércio. O valor exato depende do perfil da sua empresa, número de sócios e serviços adicionais contratados.',
+    answer: 'Nossos planos começam em R$ 197/mês. O Plano Ouro tem preço sob consulta. As opções e os recursos estão detalhados na seção de planos.',
   },
   {
     question: 'Preciso ir até o escritório para abrir minha empresa?',
@@ -19,12 +19,12 @@ const faqData = [
     answer: 'Documentos básicos como RG, CPF, comprovante de residência dos sócios e informações sobre a atividade que será exercida. Nossa equipe orienta você em cada etapa.',
   },
   {
-    question: 'O certificado digital está incluso nos planos?',
-    answer: 'Sim! Nosso plano Multibenefícios inclui certificado digital gratuitamente, válido para uso em todas as operações fiscais e bancárias.',
+    question: 'Quais recursos estão incluídos nos planos?',
+    answer: 'Todos incluem abertura grátis, atendimento por chat e e-mail e plataforma de gestão de impostos. A emissão de notas está disponível a partir do Smart; o Smart Plus adiciona conta PJ e reunião mensal com especialista. O Ouro inclui também assessor dedicado, atendimento por telefone e conciliação de extrato bancário.',
   },
   {
-    question: 'Posso contratar benefícios mesmo sendo MEI?',
-    answer: 'Sim! Nosso plano Multibenefícios está disponível para diversos portes de empresa, incluindo MEI, e oferece benefícios como academia, seguro, odontológico e muito mais.',
+    question: 'Como funciona o Plano Ouro?',
+    answer: 'O Ouro reúne todos os recursos dos demais planos, com assessor dedicado, atendimento por telefone e conciliação de extrato bancário. O valor é informado sob consulta.',
   },
 ];
 
