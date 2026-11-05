@@ -2,30 +2,30 @@ from typing import List
 from app.api.models.calculator import CalculatorRequest, CalculatorResponse
 
 PLANS_SERVICO = {
-    "basico": {"name": "Básico", "price": 197, "monthly": 197},
-    "padrao": {"name": "Padrão", "price": 253, "monthly": 253},
-    "multibeneficios": {"name": "Multibenefícios", "price": 297, "monthly": 297},
-    "essencial": {"name": "Experts Essencial", "price": 453, "monthly": 453},
+    "start": {"name": "Start", "price": 197, "monthly": 197},
+    "smart": {"name": "Smart", "price": 263, "monthly": 263},
+    "smart_plus": {"name": "Smart Plus", "price": 353, "monthly": 353},
+    "ouro": {"name": "Ouro", "price": 479, "monthly": 479},
 }
 
 PLANS_COMERCIO = {
-    "comercio_basico": {"name": "Comércio Básico", "price": 245, "monthly": 245},
+    "comercio_start": {"name": "Comércio Básico", "price": 245, "monthly": 245},
     "comercio_avancado": {"name": "Comércio Avançado", "price": 479, "monthly": 479},
 }
 
 BENEFITS_MAP = {
-    "basico": ["Plataforma de notas fiscais", "Atendimento via chat e e-mail"],
-    "padrao": ["Contabilidade completa", "Plataforma de notas fiscais", "Atendimento via WhatsApp", "Conta PJ gratuita"],
-    "multibeneficios": [
+    "start": ["Plataforma de notas fiscais", "Atendimento via chat e e-mail"],
+    "smart": ["Contabilidade completa", "Plataforma de notas fiscais", "Atendimento via WhatsApp", "Conta PJ gratuita"],
+    "smart_plus": [
         "Certificado digital", "Plataforma de notas fiscais", "Atendimento via WhatsApp",
         "Conta PJ gratuita", "2 benefícios grátis (academia, psicologia, nutrição, seguro, odontológico)",
         "Descontos exclusivos",
     ],
-    "essencial": [
+    "ouro": [
         "Certificado digital", "Plataforma de notas fiscais", "Atendimento via WhatsApp e telefone",
         "Conta PJ gratuita", "Assessor dedicado", "Emissão de notas pela equipe",
     ],
-    "comercio_basico": [
+    "comercio_start": [
         "Certificado digital", "Plataforma de notas fiscais", "Atendimento via chat e e-mail",
         "Escrituração fiscal",
     ],
@@ -36,11 +36,11 @@ BENEFITS_MAP = {
 }
 
 DESCRIPTIONS = {
-    "basico": "Plano essencial para quem está começando.",
-    "padrao": "Plano mais popular, com atendimento via WhatsApp e conta PJ gratuita.",
-    "multibeneficios": "Melhor custo-benefício com benefícios exclusivos para você e sua equipe.",
-    "essencial": "Atendimento personalizado com assessor dedicado e suporte completo.",
-    "comercio_basico": "Solução completa para empresas de comércio com escrituração fiscal.",
+    "start": "Plano ouro para quem está começando.",
+    "smart": "Plano mais popular, com atendimento via WhatsApp e conta PJ gratuita.",
+    "smart_plus": "Melhor custo-benefício com benefícios exclusivos para você e sua equipe.",
+    "ouro": "Atendimento personalizado com assessor dedicado e suporte completo.",
+    "comercio_start": "Solução completa para empresas de comércio com escrituração fiscal.",
     "comercio_avancado": "Gestão fiscal avançada com assessor dedicado e relatórios gerenciais.",
 }
 
@@ -52,20 +52,20 @@ def determine_plan(request: CalculatorRequest) -> CalculatorResponse:
         if request.employees > 2:
             base_plan = "comercio_avancado"
         else:
-            base_plan = "comercio_basico"
+            base_plan = "comercio_start"
 
-        plan = PLANS_COMERCIO.get(base_plan, PLANS_COMERCIO["comercio_basico"])
+        plan = PLANS_COMERCIO.get(base_plan, PLANS_COMERCIO["comercio_start"])
     else:
         if request.benefits:
-            base_plan = "multibeneficios"
+            base_plan = "smart_plus"
         elif request.routine == "assessor" or request.contact == "completo":
-            base_plan = "essencial"
+            base_plan = "ouro"
         elif request.employees > 2:
-            base_plan = "padrao"
+            base_plan = "smart"
         else:
-            base_plan = "basico"
+            base_plan = "start"
 
-        plan = PLANS_SERVICO.get(base_plan, PLANS_SERVICO["basico"])
+        plan = PLANS_SERVICO.get(base_plan, PLANS_SERVICO["start"])
 
     price = plan["price"]
     monthly = plan["monthly"]
@@ -80,7 +80,7 @@ def determine_plan(request: CalculatorRequest) -> CalculatorResponse:
         monthly += 50
         price += 50
 
-    if not is_comercio and request.contact == "completo" and base_plan != "essencial":
+    if not is_comercio and request.contact == "completo" and base_plan != "ouro":
         monthly += 30
         price += 30
 
