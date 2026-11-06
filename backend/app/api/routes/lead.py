@@ -24,6 +24,12 @@ async def create_lead(request: LeadRequest, db: Session = Depends(get_db), _rl: 
         logger.exception("Failed to create lead")
         raise HTTPException(status_code=400, detail="Invalid request. Please check the submitted data.")
 
+    logger.info(
+        "Lead persisted: id=%s data=%s",
+        lead.id,
+        lead_to_notification_dict(request),
+    )
+
     # E-mail notification is best-effort: persistence above must not roll back
     # when the mail service is temporarily unavailable. Failures are logged
     # internally by the service without exposing sensitive details here.
