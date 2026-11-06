@@ -122,10 +122,14 @@ export const Calculator = () => {
         contact: formData.contact,
         benefits: formData.benefits === 'Sim',
       };
-      const [leadResult, calcResult] = await Promise.allSettled([
-        leadAPI.create(leadPayload),
-        calculatorAPI.calculate(payload),
-      ]);
+      const [calcResult] = await Promise.allSettled([calculatorAPI.calculate(payload)]);
+
+      if (calcResult.status === 'fulfilled') {
+        leadPayload.recommended_plan = calcResult.value.data.recommended_plan ?? null;
+        leadPayload.monthly_price = calcResult.value.data.monthly_price ?? calcResult.value.data.price ?? null;
+      }
+
+      const [leadResult] = await Promise.allSettled([leadAPI.create(leadPayload)]);
 
       if (calcResult.status === 'fulfilled') {
         setResult({

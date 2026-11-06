@@ -27,7 +27,7 @@ Revisão e correção da one page da DFCont (React 19 + Vite em `frontend/`, Fas
 - Validação por campo (nome, e-mail, telefone, atividade, rotina, contato) com mensagens e `role="alert"`.
 - Máscara progressiva de telefone + validação de 10/11 dígitos com DDD.
 - `Intl.NumberFormat('pt-BR', BRL)` para preços; benefícios vazios tratados.
-- `Promise.allSettled`: lead + cálculo em paralelo; aviso se o lead falhar, resultado sempre exibido se o cálculo responder.
+- A calculadora envia o lead após receber o cálculo, incluindo plano e mensalidade; se o cálculo falhar, o lead ainda é enviado sem esses dados.
 - Payload completo do lead para o e-mail (toggle, employees, routine, contact, benefits, plano, preço).
 - Botão desabilitado durante loading ("Calculando..."), "Recalcular" reseta o fluxo.
 - Background `bg-calculator.jpg` + overlay escuro.
@@ -42,7 +42,7 @@ Revisão e correção da one page da DFCont (React 19 + Vite em `frontend/`, Fas
 - **Fix:** todos os CTAs (Hero "Fale conosco", CTA "Fale com um especialista", Plans, Calculator, Footer, contato no Contact) usam `https://wa.me/5511913425960?text=...` com `target="_blank" rel="noopener noreferrer"`.
 
 ### 2.7 Backend — lead + e-mail + contact
-- **`email_service.py` (novo):** e-mail de notificação de lead com corpo contextual completo. Modos `console` (log, padrão dev) e `smtp` (starttls). Best-effort: nunca derruba a persistência.
+- **`email_service.py` (novo):** e-mail de notificação de lead com corpo contextual completo. Modos `console` (log, padrão dev) e `smtp` (STARTTLS ou TLS implícito). Best-effort: nunca derruba a persistência.
 - **`lead.py`:** novos campos opcionais (`toggle`, `employees`, `routine`, `contact`, `benefits`, `recommended_plan`, `monthly_price`); telefone normalizado para dígitos com validação 10–11.
 - **`contact.py`:** telefone opcional — corrigido o **422** quando o formulário enviava telefone vazio.
 - **`config.py`:** `EMAIL_MODE`, SMTP_*, `LEAD_NOTIFICATION_EMAIL` (default `silaslopesdesouza@gmail.com`); `.env.example` atualizado.
@@ -96,6 +96,14 @@ SMTP_PASSWORD=sua-senha-de-app
 SMTP_FROM=seu-email@gmail.com
 LEAD_NOTIFICATION_EMAIL=silaslopesdesouza@gmail.com
 ```
+
+O envio usa STARTTLS para a porta 587 (e outras portas) e TLS implícito
+para a porta 465. Configure a porta de acordo com o provedor SMTP e reinicie
+o backend após alterar as variáveis de ambiente.
+
+As notificações incluem versões em HTML e texto, com dados do lead e da
+simulação. Campos não recebidos são exibidos como "Não informado"; plano e
+mensalidade são incluídos quando o cálculo é concluído com sucesso.
 
 ---
 

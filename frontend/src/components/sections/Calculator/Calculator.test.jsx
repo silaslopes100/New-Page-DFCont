@@ -88,7 +88,7 @@ describe('Calculator flow', () => {
 
     await waitFor(() => expect(screen.getByText('Padrão')).toBeInTheDocument());
     expect(screen.getByText('R$ 253,00')).toBeInTheDocument();
-    expect(screen.getByText('Certificado digital')).toBeInTheDocument();
+    expect(screen.getByText('Contabilidade completa')).toBeInTheDocument();
     expect(mockedLead).toHaveBeenCalledTimes(1);
     const leadPayload = mockedLead.mock.calls[0][0];
     expect(leadPayload.name).toBe('João Teste');
@@ -96,6 +96,8 @@ describe('Calculator flow', () => {
     expect(leadPayload.phone).toBe('11999999999');
     expect(leadPayload.origin).toBe('calculator');
     expect(leadPayload.toggle).toBe('abertura');
+    expect(leadPayload.recommended_plan).toBe('Padrão');
+    expect(leadPayload.monthly_price).toBe(253);
   });
 
   it('bloqueia duplicação de envio durante loading', async () => {
@@ -112,8 +114,9 @@ describe('Calculator flow', () => {
     const button = screen.getByRole('button', { name: 'Calcular meu plano' });
     fireEvent.click(button);
     expect(screen.getByRole('button', { name: 'Calculando...' })).toBeDisabled();
+    expect(mockedLead).not.toHaveBeenCalled();
     resolveCalc(successCalc);
-    await waitFor(() => expect(mockedCalculate).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockedLead).toHaveBeenCalledTimes(1));
   });
 
   it('exibe erro quando a API de cálculo falha', async () => {
@@ -131,6 +134,53 @@ describe('Calculator flow', () => {
       expect(screen.getByRole('alert')).toHaveTextContent('Erro de conexão. Tente novamente.')
     );
     expect(screen.queryByText(/Plano Recomendado/)).not.toBeInTheDocument();
+    expect(mockedLead).toHaveBeenCalledTimes(1);
+    expect(mockedLead.mock.calls[0][0]).not.toHaveProperty('recommended_plan');
+  });
+
+  it('envia price como mensalidade quando monthly_price não está disponível', async () => {
+    mockedCalculate.mockResolvedValue({
+      data: { ...successCalc.data, monthly_price: null, price: 0 },
+    });
+    render(<Calculator />);
+    selectActivity();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillLeadFields();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillRoutinePrefs();
+    fireEvent.click(screen.getByRole('button', { name: 'Calcular meu plano' }));
+
+    await waitFor(() => expect(mockedLead).toHaveBeenCalledTimes(1));
+    expect(mockedLead.mock.calls[0][0].monthly_price).toBe(0);
+  });
+
+  it('mostra o resultado e avisa quando o cadastro do lead falha', async () => {
+    mockedLead.mockRejectedValue(new Error('Falha ao registrar'));
+    render(<Calculator />);
+    selectActivity();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillLeadFields();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillRoutinePrefs();
+    fireEvent.click(screen.getByRole('button', { name: 'Calcular meu plano' }));
+
+    await waitFor(() => expect(screen.getByText('Padrão')).toBeInTheDocument());
+    expect(screen.getByText('Não foi possível registrar seu contato agora, mas seu plano foi calculado.')).toBeInTheDocument();
+  });
+
+  it('mostra erro do lead quando ambas as requisições falham', async () => {
+    mockedCalculate.mockRejectedValue(new Error('Cálculo indisponível'));
+    mockedLead.mockRejectedValue(new Error('Falha ao registrar'));
+    render(<Calculator />);
+    selectActivity();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillLeadFields();
+    fireEvent.click(screen.getByRole('button', { name: 'Continuar' }));
+    fillRoutinePrefs();
+    fireEvent.click(screen.getByRole('button', { name: 'Calcular meu plano' }));
+
+    await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('Falha ao registrar'));
+    expect(mockedLead).toHaveBeenCalledTimes(1);
   });
 
   it('mostra resultado mesmo com dados incompletos da API', async () => {
